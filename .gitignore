@@ -1,0 +1,55 @@
+# Android
+.gradle
+.idea
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+build/
+captures/
+.cxx/
+
+# Project files
+.DS_Store
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+
+# Node (for MCP)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local environment
+local.properties
+.env
+.env.local
+
+# Test
+.coverage
+coverage.xml
+
+# Dist/Build outputs (generated)
+dist/
+*.js.map
+

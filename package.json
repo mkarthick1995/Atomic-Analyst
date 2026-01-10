@@ -1,0 +1,22 @@
+{
+  "name": "github-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/github-mcp.js",
+  "scripts": {
+    "dev": "ts-node --esm src/github-mcp.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/github-mcp.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.2",
+    "octokit": "^3.2.1",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
