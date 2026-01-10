@@ -8,6 +8,22 @@
 
 ---
 
+## 📍 Project Directory
+
+**IMPORTANT: All project files are located in:**
+```
+\\wsl.localhost\Ubuntu\home\mkarthick1995\Projects\Atomic Analyst
+```
+
+**In WSL bash terminal:**
+```
+/home/mkarthick1995/Projects/Atomic Analyst
+```
+
+This is a Windows Subsystem for Linux (WSL) installation. All commands should be run in the WSL Ubuntu environment.
+
+---
+
 ## Rule 1: Documentation Management
 
 ### Three Documentation Files - Single Source of Truth
