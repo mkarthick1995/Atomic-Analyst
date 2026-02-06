@@ -57,9 +57,9 @@
 ### Deliverables
 - **Build Configuration**
   - `build.gradle.kts` (Project-level & App-level)
-  - Kotlin Gradle Plugin version: 2.0.0+
-  - AGP (Android Gradle Plugin): 8.1.0+
-  - Compose compiler: 1.5.5+
+  - Kotlin Gradle Plugin version: 2.3.0+
+  - AGP (Android Gradle Plugin): 8.13.2+
+  - Compose compiler: Managed by Kotlin 2.0+ (Compose plugin)
 
 - **Dependencies Management**
   ```kotlin
@@ -78,7 +78,7 @@
   org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3
   
   // Dependency Injection
-  com.google.dagger:hilt-android:2.48
+  com.google.dagger:hilt-android:2.58
   
   // Networking
   com.squareup.retrofit2:retrofit:2.10.0

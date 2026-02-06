@@ -20,7 +20,7 @@ Atomic Analyst monitors a user's finances at a molecular level. It captures ever
 
 ## Technology Stack
 
-- **Language:** Kotlin 2.0+
+- **Language:** Kotlin 2.3.0+
 - **Architecture:** MVVM + Clean Architecture
 - **UI:** Jetpack Compose with Material 3
 - **Database:** Room with SQLCipher (encrypted)
@@ -80,9 +80,9 @@ The project is organized into 14 phases:
 
 ### Prerequisites
 - Android Studio (Latest)
-- Kotlin 2.0+
-- JDK 11+
-- Gradle 8.1.0+
+- Kotlin 2.3.0+
+- JDK 17+ (21 recommended)
+- Gradle 8.13.0+
 
 ### Build Instructions
 
@@ -92,13 +92,13 @@ git clone https://github.com/mkarthick1995/Atomic-Analyst.git
 cd Atomic-Analyst
 
 # Build the project
-./gradlew build
+gradlew.bat build
 
 # Run tests
-./gradlew test
+gradlew.bat test
 
 # Build debug APK
-./gradlew assembleDebug
+gradlew.bat assembleDebug
 ```
 
 ## Project Status
@@ -159,7 +159,7 @@ Each layer is independent and testable, with proper dependency injection via Hil
 This is an internal project. Contributions follow the AGENTIC_AI_INSTRUCTIONS.md guidelines.
 
 ### Code Standards
-- Kotlin 2.0+ with null safety
+- Kotlin 2.3.0+ with null safety
 - MVVM + Clean Architecture
 - Jetpack Compose for UI
 - Comprehensive test coverage (70%+)
@@ -184,7 +184,7 @@ Proprietary - Internal Project
 
 - All work follows the AGENTIC_AI_INSTRUCTIONS.md
 - Single documentation source of truth: IMPLEMENTATION_ROADMAP.md
-- Project directory: `\\wsl.localhost\Ubuntu\home\mkarthick1995\Projects\Atomic Analyst`
+- Project directory: `C:\Workspace\Atomic-Analyst`
 - Latest Android standards (API 28-35)
 
 ---

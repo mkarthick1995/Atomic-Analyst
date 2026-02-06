@@ -12,15 +12,15 @@
 
 **IMPORTANT: All project files are located in:**
 ```
-\\wsl.localhost\Ubuntu\home\mkarthick1995\Projects\Atomic Analyst
+C:\Workspace\Atomic-Analyst
 ```
 
-**In WSL bash terminal:**
+**In PowerShell terminal:**
 ```
-/home/mkarthick1995/Projects/Atomic Analyst
+C:\Workspace\Atomic-Analyst
 ```
 
-This is a Windows Subsystem for Linux (WSL) installation. All commands should be run in the WSL Ubuntu environment.
+This is a Windows workspace. All commands should be run in PowerShell in this directory.
 
 ---
 
@@ -135,7 +135,7 @@ src/androidTest/kotlin/com/atomicanalyst/
 
 ### Build Process
 1. **After Code Changes**
-   - Run: `./gradlew build` or `./gradlew assembleDebug`
+   - Run: `gradlew.bat build` or `gradlew.bat assembleDebug`
    - Wait for build to complete
    - Check for errors and warnings
 
@@ -168,10 +168,10 @@ src/androidTest/kotlin/com/atomicanalyst/
    - Verify no conflicts with existing dependencies
 
 2. **Library Compatibility Matrix**
-   - Kotlin: 2.0+
+   - Kotlin: 2.3.0+
    - Android API: 28-35
-   - Gradle: 8.1.0+
-   - AGP: 8.1.0+
+   - Gradle: 8.13.0+
+   - AGP: 8.13.2+
    - Compose: 1.6.0+
 
 3. **Strict Version Policy**
