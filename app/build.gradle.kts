@@ -42,6 +42,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {
@@ -77,6 +78,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.6.0")
     implementation("androidx.compose.material3:material3:1.1.2")
     implementation("androidx.compose.runtime:runtime:1.6.0")
+    implementation("androidx.navigation:navigation-compose:2.9.7")
 
     // Architecture & Coroutines
     implementation("androidx.room:room-runtime:2.6.1")
