@@ -6,7 +6,9 @@ sealed class AppException(
 ) : Exception(message, cause) {
     class Network(cause: Throwable? = null) : AppException("Network error", cause)
     class Database(cause: Throwable? = null) : AppException("Database error", cause)
-    class Security(cause: Throwable? = null) : AppException("Security error", cause)
+    class Security(message: String = "Security error", cause: Throwable? = null) :
+        AppException(message, cause)
+    class Authentication(message: String = "Authentication error") : AppException(message)
     class Validation(message: String) : AppException(message)
     class Unknown(cause: Throwable? = null) : AppException("Unknown error", cause)
 }

@@ -1,10 +1,13 @@
 package com.atomicanalyst.di
 
+import com.atomicanalyst.data.security.DatabaseKeyStore
+import com.atomicanalyst.data.security.SecureStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import net.sqlcipher.database.SupportFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -14,4 +17,16 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabaseName(): String = DATABASE_NAME
+
+    @Provides
+    @Singleton
+    fun provideDatabaseKeyStore(
+        storage: SecureStorage
+    ): DatabaseKeyStore = DatabaseKeyStore(storage)
+
+    @Provides
+    @Singleton
+    fun provideSqlCipherFactory(
+        keyStore: DatabaseKeyStore
+    ): SupportFactory = SupportFactory(keyStore.getOrCreateKey())
 }

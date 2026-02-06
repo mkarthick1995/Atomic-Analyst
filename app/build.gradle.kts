@@ -89,6 +89,8 @@ dependencies {
     // Dependency Injection
     implementation("com.google.dagger:hilt-android:2.58")
     ksp("com.google.dagger:hilt-compiler:2.58")
+    implementation("androidx.hilt:hilt-work:1.2.0")
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
 
     // Networking
     implementation("com.squareup.retrofit2:retrofit:2.10.0")
@@ -96,6 +98,11 @@ dependencies {
 
     // Security
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.biometric:biometric:1.1.0")
+    implementation("net.zetetic:android-database-sqlcipher:4.5.4")
+
+    // Background Work
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
     // PDF & Image Processing
     implementation("com.itextpdf:itext7-core:7.2.5") {

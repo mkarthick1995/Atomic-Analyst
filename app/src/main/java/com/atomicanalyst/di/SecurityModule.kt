@@ -1,8 +1,15 @@
 package com.atomicanalyst.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.atomicanalyst.data.backup.BackupPassphraseStore
+import com.atomicanalyst.data.security.EncryptedPrefsSecureStorage
+import com.atomicanalyst.data.security.PasswordHasher
+import com.atomicanalyst.data.security.SecureStorage
+import com.atomicanalyst.data.security.SessionManager
+import com.atomicanalyst.utils.Clock
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,11 +35,34 @@ object SecurityModule {
     fun provideEncryptedSharedPreferences(
         @ApplicationContext context: Context,
         masterKey: MasterKey
-    ) = EncryptedSharedPreferences.create(
+    ): SharedPreferences = EncryptedSharedPreferences.create(
         context,
         SECURE_PREFS_FILE,
         masterKey,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
+
+    @Provides
+    @Singleton
+    fun provideSecureStorage(
+        prefs: SharedPreferences
+    ): SecureStorage = EncryptedPrefsSecureStorage(prefs)
+
+    @Provides
+    @Singleton
+    fun providePasswordHasher(): PasswordHasher = PasswordHasher()
+
+    @Provides
+    @Singleton
+    fun provideSessionManager(
+        storage: SecureStorage,
+        clock: Clock
+    ): SessionManager = SessionManager(storage, clock)
+
+    @Provides
+    @Singleton
+    fun provideBackupPassphraseStore(
+        storage: SecureStorage
+    ): BackupPassphraseStore = BackupPassphraseStore(storage)
 }
