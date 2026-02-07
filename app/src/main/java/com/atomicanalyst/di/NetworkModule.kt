@@ -35,7 +35,7 @@ object NetworkModule {
             .tlsVersions(TlsVersion.TLS_1_3, TlsVersion.TLS_1_2)
             .build()
         val builder = OkHttpClient.Builder()
-            .connectionSpecs(listOf(connectionSpec, ConnectionSpec.CLEARTEXT))
+            .connectionSpecs(listOf(connectionSpec))
             .addInterceptor(authHeaderInterceptor)
         if (config.pins.isNotEmpty()) {
             val pinner = CertificatePinner.Builder().apply {

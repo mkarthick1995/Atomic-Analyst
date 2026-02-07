@@ -10,6 +10,10 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
 }
 
+fun buildConfigString(value: String): String = "\"${value.replace("\"", "\\\"")}\""
+val apiBaseUrl = providers.gradleProperty("API_BASE_URL").orNull ?: "https://example.com/"
+val certPins = providers.gradleProperty("CERT_PINS").orNull ?: ""
+
 android {
     namespace = "com.atomicanalyst"
     compileSdk = 35
@@ -24,8 +28,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
 
-        buildConfigField("String", "API_BASE_URL", "\"https://example.com/\"")
-        buildConfigField("String", "CERT_PINS", "\"\"")
+        buildConfigField("String", "API_BASE_URL", buildConfigString(apiBaseUrl))
+        buildConfigField("String", "CERT_PINS", buildConfigString(certPins))
     }
 
     buildTypes {
@@ -101,6 +105,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.58")
     kapt("com.google.dagger:hilt-compiler:2.58")
     implementation("androidx.hilt:hilt-work:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     kapt("androidx.hilt:hilt-compiler:1.2.0")
 
     // Networking
@@ -145,6 +150,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:core:1.5.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.0")
     androidTestImplementation("org.mockito:mockito-android:5.2.0")
 

@@ -98,10 +98,17 @@ Linux/macOS:
 ./gradlew assembleDebug
 ```
 
+### Local Configuration
+Override the API host and certificate pins in `gradle.properties`:
+```properties
+API_BASE_URL=https://example.com/
+CERT_PINS=api.example.com=sha256/BASE64PIN,cdn.example.com=sha256/BASE64PIN
+```
+
 ## Project Status
 
-Current Phase: Phase 2 - Authentication and Data Security (In Progress)
-Overall Progress: 24%
+Current Phase: Phase 3 - Transaction Data Layer (In Progress)
+Overall Progress: 28%
 Last Updated: February 7, 2026
 
 ### Completed
@@ -111,11 +118,10 @@ Last Updated: February 7, 2026
 - Secure storage, session management, backup crypto scaffolding
 - Encrypted backup manager and scheduler scaffolding
 - SQLCipher support wired into Room builder
-- Google Drive cloud backup integration (appDataFolder; requires sign-in UI)
+- Google Drive cloud backup integration (appDataFolder) with sign-in UI
+- Certificate pinning configurable via `CERT_PINS` (TLS-only client)
 
 ### Next Steps
-- Phase 2: certificate pinning with real host pins
-- Phase 2: security tests and Drive sign-in UI for cloud backups
 - Phase 3: database tests and integrity checks
 
 ## Architecture
@@ -140,8 +146,8 @@ Each layer is independent and testable, with dependency injection via Hilt.
 
 ### Data Security and Backup (Phase 2 - mandatory)
 - Local encrypted backup and restore implemented
-- Cloud backup: Google Drive appDataFolder implemented (sign-in UI pending)
-- Status: In progress; must complete before release
+- Cloud backup: Google Drive appDataFolder + sign-in UI implemented
+- Status: completed (production pins required before release)
 
 ### Performance Targets
 - App startup: < 2 seconds
@@ -179,6 +185,7 @@ Proprietary - Internal Project
 
 - Backend service is post-MVP and not required for current phases
 - Certificate pins are configured via BuildConfig `CERT_PINS` (comma-separated `host=sha256/...`)
+- Override `API_BASE_URL` and `CERT_PINS` via `gradle.properties` for local testing
 - Single documentation source of truth: IMPLEMENTATION_ROADMAP.md
 - Project directory: C:\Workspace\Atomic-Analyst
 - Latest Android standards (API 28-35)
@@ -186,4 +193,4 @@ Proprietary - Internal Project
 ---
 
 Created: January 10, 2026
-Status: In Progress (Phase 2; Phase 3 groundwork started)
+Status: In Progress (Phase 3; Phase 2 complete)

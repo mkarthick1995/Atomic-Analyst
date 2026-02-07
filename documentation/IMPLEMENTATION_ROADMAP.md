@@ -237,6 +237,7 @@
 
 - **Network Security**
   - Certificate pinning for API calls
+  - Pins configured via `CERT_PINS` gradle property (comma-separated `host=sha256/...`)
   - TLS 1.3 enforcement
   - API authentication headers
 

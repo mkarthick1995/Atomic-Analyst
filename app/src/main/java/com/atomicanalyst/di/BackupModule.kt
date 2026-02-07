@@ -13,6 +13,7 @@ import com.atomicanalyst.data.backup.BackupStore
 import com.atomicanalyst.data.backup.cloud.CloudBackupClient
 import com.atomicanalyst.data.backup.cloud.DefaultDriveServiceFactory
 import com.atomicanalyst.data.backup.cloud.DefaultGoogleAccountProvider
+import com.atomicanalyst.data.backup.cloud.DriveSignInManager
 import com.atomicanalyst.data.backup.cloud.DriveServiceFactory
 import com.atomicanalyst.data.backup.cloud.GoogleDriveBackupClient
 import com.atomicanalyst.data.backup.cloud.GoogleAccountProvider
@@ -96,4 +97,10 @@ object BackupModule {
     fun provideDriveServiceFactory(
         @ApplicationContext context: Context
     ): DriveServiceFactory = DefaultDriveServiceFactory(context)
+
+    @Provides
+    @Singleton
+    fun provideDriveSignInManager(
+        @ApplicationContext context: Context
+    ): DriveSignInManager = DriveSignInManager(context)
 }

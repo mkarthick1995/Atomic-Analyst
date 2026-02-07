@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Atomic Analyst</string>
+    <string name="backup_title">Backup &amp; Security</string>
+    <string name="backup_status_sign_in">Drive: %1$s</string>
+    <string name="backup_status_passphrase">Passphrase: %1$s</string>
+    <string name="backup_status_last_local">Last local backup: %1$s</string>
+    <string name="backup_passphrase_label">Backup passphrase</string>
+    <string name="backup_passphrase_save">Save passphrase</string>
+    <string name="backup_passphrase_clear">Clear passphrase</string>
+    <string name="backup_drive_sign_in">Connect Google Drive</string>
+    <string name="backup_drive_sign_out">Disconnect Google Drive</string>
+    <string name="backup_local_create">Create local backup</string>
+    <string name="backup_local_restore">Restore latest local backup</string>
+    <string name="backup_drive_upload">Upload backup to Drive</string>
+    <string name="backup_drive_restore">Restore latest from Drive</string>
 </resources>
