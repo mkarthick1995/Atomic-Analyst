@@ -1,12 +1,13 @@
 package com.atomicanalyst.di
 
 import android.content.Context
+import com.atomicanalyst.data.auth.AuthLocalStore
+import com.atomicanalyst.data.backup.AppBackupDataSource
 import com.atomicanalyst.data.backup.BackupCrypto
 import com.atomicanalyst.data.backup.BackupDataSource
 import com.atomicanalyst.data.backup.BackupManager
 import com.atomicanalyst.data.backup.BackupPassphraseStore
 import com.atomicanalyst.data.backup.BackupStore
-import com.atomicanalyst.data.backup.PlaceholderBackupDataSource
 import com.atomicanalyst.utils.Clock
 import com.atomicanalyst.utils.DispatcherProvider
 import dagger.Module
@@ -32,7 +33,10 @@ object BackupModule {
 
     @Provides
     @Singleton
-    fun provideBackupDataSource(): BackupDataSource = PlaceholderBackupDataSource()
+    fun provideBackupDataSource(
+        authLocalStore: AuthLocalStore,
+        clock: Clock
+    ): BackupDataSource = AppBackupDataSource(authLocalStore, clock)
 
     @Provides
     @Singleton

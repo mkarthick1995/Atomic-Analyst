@@ -1,152 +1,144 @@
 # Atomic Analyst
 
-**An Android application for comprehensive personal financial analysis and insights.**
+An Android application for comprehensive personal financial analysis and insights.
 
 ## Vision
 
-Atomic Analyst monitors a user's finances at a molecular level. It captures every expenditure channel—GPay, PhonePe, UPI, credit/debit cards, wallets, and cash—and turns those transactions into actionable insights that improve long-term financial health.
+Atomic Analyst monitors a user's finances at a molecular level. It captures every expenditure channel (GPay, PhonePe, UPI, credit/debit cards, wallets, and cash) and turns those transactions into actionable insights that improve long-term financial health.
 
 ## Key Features
 
-- **Comprehensive Transaction Ingestion** - Aggregate data from all payment sources (live feeds, PDFs, receipts)
-- **Smart Categorization** - AI-powered automatic expense classification with user learning
-- **Advanced Reporting** - Daily, weekly, monthly, and annual reports with visualizations
-- **AI Assistance** - OpenAI integration for personalized insights and recommendations
-- **Multi-Account Support** - Track multiple bank accounts, credit cards, wallets, and loans
-- **De-duplication & Reconciliation** - Eliminate duplicate transactions, detect internal transfers
-- **Anomaly Detection** - Get alerted to unusual spending patterns
-- **Expense Forecasting** - Predict future spending using historical trends
-- **Budget Management** - Set category-based budgets with threshold alerts
+- Comprehensive transaction ingestion (live feeds, PDFs, receipts)
+- Smart categorization with user learning
+- Advanced reporting (daily, weekly, monthly, annual)
+- AI assistance for insights and recommendations
+- Multi-account support
+- De-duplication and reconciliation
+- Anomaly detection
+- Expense forecasting
+- Budget management and alerts
 
 ## Technology Stack
 
-- **Language:** Kotlin 2.3.0+
-- **Architecture:** MVVM + Clean Architecture
-- **UI:** Jetpack Compose with Material 3
-- **Database:** Room with SQLCipher (encrypted)
-- **Dependency Injection:** Hilt
-- **Async:** Coroutines
-- **APIs:** Retrofit, OpenAI
-- **Testing:** JUnit, Mockito, Espresso
+- Language: Kotlin 2.3.0+
+- Architecture: MVVM + Clean Architecture
+- UI: Jetpack Compose with Material 3
+- Database: Room with SQLCipher (encrypted)
+- Dependency Injection: Hilt
+- Async: Coroutines
+- APIs: Retrofit, OpenAI
+- Testing: JUnit, Mockito, Espresso
 
 ## Project Structure
 
 ```
 app/
-├── src/
-│   ├── main/
-│   │   ├── java/com/atomicanalyst/
-│   │   │   ├── di/              (Dependency Injection)
-│   │   │   ├── data/            (Data Layer)
-│   │   │   ├── domain/          (Domain Layer)
-│   │   │   ├── presentation/    (UI Layer)
-│   │   │   └── utils/           (Utilities)
-│   │   └── res/
-│   ├── test/
-│   └── androidTest/
-├── build.gradle.kts
-└── proguard-rules.pro
+|-- src/
+|   |-- main/
+|   |   |-- java/com/atomicanalyst/
+|   |   |   |-- di/              (Dependency Injection)
+|   |   |   |-- data/            (Data Layer)
+|   |   |   |-- domain/          (Domain Layer)
+|   |   |   |-- presentation/    (UI Layer)
+|   |   |   `-- utils/           (Utilities)
+|   |   `-- res/
+|   |-- test/
+|   `-- androidTest/
+|-- build.gradle.kts
+`-- proguard-rules.pro
 ```
 
 ## Documentation
 
-- **[IMPLEMENTATION_ROADMAP.md](documentation/IMPLEMENTATION_ROADMAP.md)** - Complete 14-phase implementation plan
-- **[AGENTIC_AI_INSTRUCTIONS.md](documentation/AGENTIC_AI_INSTRUCTIONS.md)** - AI behavioral guidelines (13 rules)
-- **[IMPLEMENTATION_CHECKLIST.md](documentation/IMPLEMENTATION_CHECKLIST.md)** - Phase-wise progress tracking
+- IMPLEMENTATION_ROADMAP.md: documentation/IMPLEMENTATION_ROADMAP.md
+- AGENTIC_AI_INSTRUCTIONS.md: documentation/AGENTIC_AI_INSTRUCTIONS.md
+- IMPLEMENTATION_CHECKLIST.md: documentation/IMPLEMENTATION_CHECKLIST.md
 
 ## Implementation Phases
 
-The project is organized into 14 phases:
+1. Phase 0 - Project Setup and Infrastructure
+2. Phase 1 - Core Architecture and Foundation
+3. Phase 2 - Authentication and Data Security (with backup system)
+4. Phase 3 - Transaction Data Layer
+5. Phase 4 - Account Management
+6. Phase 5 - Transaction Ingestion and Parsing
+7. Phase 6 - Categorization Engine
+8. Phase 7 - De-duplication and Reconciliation
+9. Phase 8 - Analytics and Reporting
+10. Phase 9 - AI Integration (OpenAI)
+11. Phase 10 - Notifications and Alerts
+12. Phase 11 - Forecasting Module
+13. Phase 12 - UI/UX and User Experience
+14. Phase 13 - Testing and Quality Assurance
+15. Phase 14 - Release and Deployment
 
-1. **Phase 0** - Project Setup & Infrastructure
-2. **Phase 1** - Core Architecture & Foundation
-3. **Phase 2** - Authentication & Data Security (with backup system)
-4. **Phase 3** - Transaction Data Layer
-5. **Phase 4** - Account Management
-6. **Phase 5** - Transaction Ingestion & Parsing
-7. **Phase 6** - Categorization Engine
-8. **Phase 7** - De-duplication & Reconciliation
-9. **Phase 8** - Analytics & Reporting
-10. **Phase 9** - AI Integration (OpenAI)
-11. **Phase 10** - Notifications & Alerts
-12. **Phase 11** - Forecasting Module
-13. **Phase 12** - UI/UX & User Experience
-14. **Phase 13** - Testing & Quality Assurance
-15. **Phase 14** - Release & Deployment
-
-**Estimated Timeline:** 37-51 weeks (9-12 months) with 2-3 senior Android developers
+Estimated timeline: 37-51 weeks (9-12 months) with 2-3 senior Android developers
 
 ## Getting Started
 
 ### Prerequisites
-- Android Studio (Latest)
+- Android Studio (latest stable)
 - Kotlin 2.3.0+
 - JDK 17+ (21 recommended)
 - Gradle 8.13.0+
 
 ### Build Instructions
 
+Windows:
 ```bash
-# Clone the repository
-git clone https://github.com/mkarthick1995/Atomic-Analyst.git
-cd Atomic-Analyst
-
-# Build the project
 gradlew.bat build
-
-# Run tests
 gradlew.bat test
-
-# Build debug APK
 gradlew.bat assembleDebug
+```
+
+Linux/macOS:
+```bash
+./gradlew build
+./gradlew test
+./gradlew assembleDebug
 ```
 
 ## Project Status
 
-**Current Phase:** Planning & Setup (Phase 0)  
-**Overall Progress:** 0%  
-**Last Updated:** January 10, 2026
+Current Phase: Phase 2 - Authentication and Data Security (In Progress)
+Overall Progress: 18%
+Last Updated: February 7, 2026
 
 ### Completed
-- ✅ Documentation system established
-- ✅ AI behavioral guidelines created
-- ✅ Project structure defined
-- ✅ Technology stack finalized
-- ✅ Git repository initialized
-- ✅ Implementation roadmap created
+- Phase 0 and Phase 1 foundations
+- Toolchain stabilized (Gradle 8.13, AGP 8.13.2, Kotlin 2.3.0, Hilt 2.58)
+- Local authentication foundations (register/login/logout)
+- Secure storage, session management, backup crypto scaffolding
 
 ### Next Steps
-- ⏳ Phase 0: Project Setup & Infrastructure
-- ⏳ Initialize Android project
-- ⏳ Configure build system
-- ⏳ Begin Phase 1 implementation
+- Continue Phase 2: SQLCipher wired to Room (requires Phase 3 DB)
+- Add certificate pinning with real host pins
+- Cloud backup (Drive/OneDrive) and remaining security tests
 
 ## Architecture
 
-The project follows **MVVM + Clean Architecture** pattern:
+The project follows MVVM + Clean Architecture:
 
 ```
 Presentation Layer (UI)
-    ↓
+    |
 ViewModel Layer
-    ↓
+    |
 Domain Layer (Use Cases)
-    ↓
+    |
 Data Layer (Repository)
-    ↓
+    |
 Data Sources (DB, API, Files)
 ```
 
-Each layer is independent and testable, with proper dependency injection via Hilt.
+Each layer is independent and testable, with dependency injection via Hilt.
 
 ## Critical Requirements
 
-### Data Security & Backup (Phase 2 - MANDATORY)
-- ✅ 3-tier backup system designed
-- ✅ Automatic cloud backup (daily @ 2 AM)
-- ✅ Manual local backup export
-- ✅ Incremental sync (future)
-- **Status:** CRITICAL - Must implement before release
+### Data Security and Backup (Phase 2 - mandatory)
+- Local encrypted backup and restore implemented
+- Cloud backup (Drive/OneDrive) pending
+- Status: In progress; must complete before release
 
 ### Performance Targets
 - App startup: < 2 seconds
@@ -156,7 +148,7 @@ Each layer is independent and testable, with proper dependency injection via Hil
 
 ## Contributing
 
-This is an internal project. Contributions follow the AGENTIC_AI_INSTRUCTIONS.md guidelines.
+Internal project. Follow AGENTIC_AI_INSTRUCTIONS.md.
 
 ### Code Standards
 - Kotlin 2.3.0+ with null safety
@@ -177,18 +169,17 @@ Proprietary - Internal Project
 
 ## Contact
 
-- **Project Lead:** mkarthick1995
-- **Repository:** https://github.com/mkarthick1995/Atomic-Analyst
+- Project Lead: mkarthick1995
+- Repository: https://github.com/mkarthick1995/Atomic-Analyst
 
 ## Important Notes
 
-- All work follows the AGENTIC_AI_INSTRUCTIONS.md
+- Backend service is post-MVP and not required for current phases
 - Single documentation source of truth: IMPLEMENTATION_ROADMAP.md
-- Project directory: `C:\Workspace\Atomic-Analyst`
+- Project directory: C:\Workspace\Atomic-Analyst
 - Latest Android standards (API 28-35)
 
 ---
 
-**Created:** January 10, 2026  
-**Status:** ✅ Ready for Phase 0 Implementation
-
+Created: January 10, 2026
+Status: In Progress (Phase 2)
