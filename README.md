@@ -107,8 +107,8 @@ CERT_PINS=api.example.com=sha256/BASE64PIN,cdn.example.com=sha256/BASE64PIN
 
 ## Project Status
 
-Current Phase: Phase 3 - Transaction Data Layer (In Progress)
-Overall Progress: 28%
+Current Phase: Phase 4 - Account Management (In Progress)
+Overall Progress: 32%
 Last Updated: February 7, 2026
 
 ### Completed
@@ -122,7 +122,8 @@ Last Updated: February 7, 2026
 - Certificate pinning configurable via `CERT_PINS` (TLS-only client)
 
 ### Next Steps
-- Phase 3: database tests and integrity checks
+- Phase 4: account service expansion (liability linking, standing instructions)
+- Phase 4: account UI flows (list/detail/add/edit)
 
 ## Architecture
 
@@ -193,4 +194,4 @@ Proprietary - Internal Project
 ---
 
 Created: January 10, 2026
-Status: In Progress (Phase 3; Phase 2 complete)
+Status: In Progress (Phase 4; Phase 3 tests underway)

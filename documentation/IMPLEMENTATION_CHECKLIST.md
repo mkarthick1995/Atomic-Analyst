@@ -2,8 +2,8 @@
 
 **Purpose:** Track all implemented features, code changes, and project milestones  
 **Last Updated:** February 7, 2026
-**Current Phase:** Phase 3 - Transaction Data Layer
-**Overall Progress:** 28%
+**Current Phase:** Phase 4 - Account Management
+**Overall Progress:** 32%
 
 ---
 
@@ -190,38 +190,38 @@
 
 ### Phase 4: Account Management
 **Timeline:** 1-2 weeks  
-**Status:** ⏳ Not Started
+**Status:** In Progress
 
 - [ ] **Account Model**
-  - [ ] Create `Account` data class
-  - [ ] Create `AccountType` enum
-  - [ ] Create `StandingInstruction` data class
-  - [ ] Create `Frequency` enum
+  - [x] Create Account data class
+  - [x] Create AccountType enum
+  - [x] Create StandingInstruction data class
+  - [x] Create Frequency enum
 
 - [ ] **Account Service**
-  - [ ] Implement add account logic
-  - [ ] Implement update account logic
-  - [ ] Implement delete account logic
-  - [ ] Implement account activation/deactivation
+  - [x] Implement add account logic
+  - [x] Implement update account logic
+  - [x] Implement delete account logic
+  - [x] Implement account activation/deactivation
   - [ ] Implement liability linking
 
 - [ ] **Balance Tracking**
-  - [ ] Implement balance calculation logic
-  - [ ] Implement opening/closing balance
-  - [ ] Implement balance snapshots
-  - [ ] Implement balance history
+  - [x] Implement balance calculation logic
+  - [x] Implement opening/closing balance
+  - [x] Implement balance snapshots
+  - [x] Implement balance history
 
 - [ ] **Account Testing**
-  - [ ] Test account CRUD operations
-  - [ ] Test balance calculations
-  - [ ] Test standing instructions
-  - [ ] Test account queries
+  - [x] Test account CRUD operations
+  - [x] Test balance calculations
+  - [x] Test standing instructions
+  - [x] Test account queries
 
 **Deliverables:**
 - [ ] Account management system working
-- [ ] Balance calculations accurate
+- [x] Balance calculations accurate
 - [ ] Multi-account support functional
-- [ ] Account tests passing
+- [x] Account tests passing
 - [x] Build passes with 0 errors
 
 ---
@@ -784,7 +784,7 @@
 | Phase 1 | - | - | ✅ Completed | 100% |
 | Phase 2 | - | - | âœ… Completed | 100% |
 | Phase 3 | - | - | ⏳ In Progress | 70% |
-| Phase 4 | - | - | ⏳ Not Started | 0% |
+| Phase 4 | - | - | â³ In Progress | 40% |
 | Phase 5 | - | - | ⏳ Not Started | 0% |
 | Phase 6 | - | - | ⏳ Not Started | 0% |
 | Phase 7 | - | - | ⏳ Not Started | 0% |
@@ -796,13 +796,14 @@
 | Phase 13 | - | - | ⏳ Not Started | 0% |
 | Phase 14 | - | - | ⏳ Not Started | 0% |
 
-**Overall MVP Progress: 30%**
+**Overall MVP Progress: 32%**
 
 ---
 
 ## 📝 Recent Changes Log
 
 ### February 7, 2026
+- Started Phase 4 account management usecases, validators, and balance tracking logic
 - Added Room DAO, integrity, and migration tests (androidTest)
 - Added Google Drive sign-in UI for backup flows
 - Enabled TLS-only networking and certificate pinning configuration via gradle properties
@@ -849,8 +850,8 @@
 
 ## 🎯 Next Steps
 
-1. Start Phase 4 account management
-2. Add instrumentation coverage for data import flows
+1. Implement liability linking for accounts
+2. Add account UI flows (list/detail/add/edit)
 3. Validate Room schema export/migration plan for next version
 
 ---

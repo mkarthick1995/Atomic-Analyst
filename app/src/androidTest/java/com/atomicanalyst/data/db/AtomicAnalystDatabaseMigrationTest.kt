@@ -13,7 +13,7 @@ class AtomicAnalystDatabaseMigrationTest {
     @get:Rule
     val helper = MigrationTestHelper(
         InstrumentationRegistry.getInstrumentation(),
-        AtomicAnalystDatabase::class.java.canonicalName,
+        AtomicAnalystDatabase::class.java,
         FrameworkSQLiteOpenHelperFactory()
     )
 
