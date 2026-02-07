@@ -49,7 +49,11 @@ android {
     }
 
     packaging {
-        resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        resources.excludes += setOf(
+            "/META-INF/{AL2.0,LGPL2.1}",
+            "META-INF/DEPENDENCIES",
+            "META-INF/INDEX.LIST"
+        )
     }
 
     lint {
@@ -110,6 +114,12 @@ dependencies {
 
     // Background Work
     implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    // Cloud Backup (Google Drive)
+    implementation("com.google.android.gms:play-services-auth:21.5.0")
+    implementation("com.google.api-client:google-api-client-android:2.8.1")
+    implementation("com.google.api-client:google-api-client-gson:2.8.1")
+    implementation("com.google.apis:google-api-services-drive:v3-rev20240509-2.0.0")
 
     // PDF & Image Processing
     implementation("com.itextpdf:itext7-core:7.2.5") {

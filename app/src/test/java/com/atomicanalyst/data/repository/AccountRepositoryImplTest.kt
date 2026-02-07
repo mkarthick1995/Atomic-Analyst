@@ -23,6 +23,11 @@ class AccountRepositoryImplTest {
             emit()
         }
 
+        override suspend fun upsertAll(accounts: List<AccountEntity>) {
+            accounts.forEach { items[it.id] = it }
+            emit()
+        }
+
         override suspend fun update(account: AccountEntity) {
             items[account.id] = account
             emit()
@@ -35,7 +40,14 @@ class AccountRepositoryImplTest {
 
         override suspend fun getById(id: String): AccountEntity? = items[id]
 
+        override suspend fun getAll(): List<AccountEntity> = items.values.toList()
+
         override fun observeAll(): Flow<List<AccountEntity>> = flow
+
+        override suspend fun clearAll() {
+            items.clear()
+            emit()
+        }
 
         private fun emit() {
             flow.value = items.values.sortedBy { it.name }

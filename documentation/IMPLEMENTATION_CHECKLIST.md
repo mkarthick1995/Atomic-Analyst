@@ -2,8 +2,8 @@
 
 **Purpose:** Track all implemented features, code changes, and project milestones  
 **Last Updated:** February 7, 2026
-**Current Phase:** Phase 3 - Transaction Data Layer
-**Overall Progress:** 22%
+**Current Phase:** Phase 2 - Authentication & Data Security
+**Overall Progress:** 24%
 
 ---
 
@@ -76,7 +76,7 @@
   - [x] Implement user registration logic
   - [x] Implement user login logic
   - [x] Implement biometric authentication setup
-  - [ ] Implement JWT token management
+  - [x] Implement local session tokens (JWT not used in local-only auth model)
   - [x] Implement logout with cleanup
   - [x] Create authentication tests
 
@@ -100,13 +100,14 @@
 
 - [ ] **Data Backup & Recovery** ⭐ CRITICAL
   - [x] Implement BackupManager class
-  - [ ] Implement cloud backup (Google Drive/OneDrive)
+  - [x] Implement cloud backup (Google Drive appDataFolder)
   - [x] Implement local backup export
   - [x] Implement backup encryption
   - [x] Implement restore from backup logic
   - [x] Implement backup verification checksums
   - [x] Implement 30-day backup history
   - [x] Implement master password protection
+  - [x] Extend backup payload to include database data
   - [x] Create backup scheduling (WorkManager)
   - [x] Create backup tests
   - [x] Create restore tests
@@ -780,7 +781,7 @@
 |-------|-------|-----|--------|----------|
 | Phase 0 | - | - | ✅ Completed | 100% |
 | Phase 1 | - | - | ✅ Completed | 100% |
-| Phase 2 | - | - | ? In Progress | 30% |
+| Phase 2 | - | - | ? In Progress | 70% |
 | Phase 3 | - | - | ⏳ In Progress | 60% |
 | Phase 4 | - | - | ⏳ Not Started | 0% |
 | Phase 5 | - | - | ⏳ Not Started | 0% |
@@ -794,7 +795,7 @@
 | Phase 13 | - | - | ⏳ Not Started | 0% |
 | Phase 14 | - | - | ⏳ Not Started | 0% |
 
-**Overall MVP Progress: 18%**
+**Overall MVP Progress: 24%**
 
 ---
 
@@ -809,8 +810,14 @@
 - Added repository and mapper unit tests
 - Switched Room/Hilt processors to KAPT to avoid KSP build failures (no version changes)
 - Upgraded Room to 2.8.4 for Kotlin 2.3.0 compatibility
+- Split TransactionTag DAO for detekt limits and repository usage
+- Extended backup payload to include database data (version 2)
+- Added backup export/import tests with DB data
+- Added Google Drive cloud backup client and BackupManager cloud operations
+- Added bulk DAO helpers for backup import/export
+- Added INTERNET permission for network/Drive access
 - Updated README and Phase 3 roadmap notes
-- Status: Build succeeds with Room 2.8.4
+- Status: Build succeeds with Room 2.8.4 and Google Drive backup
 
 ### February 6, 2026
 - Started Phase 2 security/auth foundations (local auth, backup crypto, WorkManager, SQLCipher scaffolding, and tests)
@@ -837,9 +844,9 @@
 
 ## 🎯 Next Steps
 
-1. Continue Phase 3: Transaction Data Layer
-2. Resume Phase 2: certificate pinning and cloud backup
-3. Re-run full build after any dependency changes
+1. Finish Phase 2: certificate pinning and security tests
+2. Add Google sign-in UI for Drive backup flows
+3. Continue Phase 3: database tests (DAOs, migrations, integrity)
 
 ---
 

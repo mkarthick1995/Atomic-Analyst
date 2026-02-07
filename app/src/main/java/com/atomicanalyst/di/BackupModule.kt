@@ -2,12 +2,21 @@ package com.atomicanalyst.di
 
 import android.content.Context
 import com.atomicanalyst.data.auth.AuthLocalStore
+import androidx.room.withTransaction
 import com.atomicanalyst.data.backup.AppBackupDataSource
+import com.atomicanalyst.data.backup.BackupDaos
 import com.atomicanalyst.data.backup.BackupCrypto
 import com.atomicanalyst.data.backup.BackupDataSource
 import com.atomicanalyst.data.backup.BackupManager
 import com.atomicanalyst.data.backup.BackupPassphraseStore
 import com.atomicanalyst.data.backup.BackupStore
+import com.atomicanalyst.data.backup.cloud.CloudBackupClient
+import com.atomicanalyst.data.backup.cloud.DefaultDriveServiceFactory
+import com.atomicanalyst.data.backup.cloud.DefaultGoogleAccountProvider
+import com.atomicanalyst.data.backup.cloud.DriveServiceFactory
+import com.atomicanalyst.data.backup.cloud.GoogleDriveBackupClient
+import com.atomicanalyst.data.backup.cloud.GoogleAccountProvider
+import com.atomicanalyst.data.db.AtomicAnalystDatabase
 import com.atomicanalyst.utils.Clock
 import com.atomicanalyst.utils.DispatcherProvider
 import dagger.Module
@@ -35,8 +44,21 @@ object BackupModule {
     @Singleton
     fun provideBackupDataSource(
         authLocalStore: AuthLocalStore,
+        database: AtomicAnalystDatabase,
         clock: Clock
-    ): BackupDataSource = AppBackupDataSource(authLocalStore, clock)
+    ): BackupDataSource = AppBackupDataSource(
+        authLocalStore = authLocalStore,
+        daos = BackupDaos(
+            accountDao = database.accountDao(),
+            categoryDao = database.categoryDao(),
+            tagDao = database.tagDao(),
+            transactionDao = database.transactionDao(),
+            transactionTagDao = database.transactionTagDao(),
+            reconciliationLogDao = database.reconciliationLogDao()
+        ),
+        runInTransaction = { block -> database.withTransaction { block() } },
+        clock = clock
+    )
 
     @Provides
     @Singleton
@@ -56,4 +78,22 @@ object BackupModule {
         dispatcherProvider = dispatcherProvider,
         clock = clock
     )
+
+    @Provides
+    @Singleton
+    fun provideCloudBackupClient(
+        client: GoogleDriveBackupClient
+    ): CloudBackupClient = client
+
+    @Provides
+    @Singleton
+    fun provideGoogleAccountProvider(
+        @ApplicationContext context: Context
+    ): GoogleAccountProvider = DefaultGoogleAccountProvider(context)
+
+    @Provides
+    @Singleton
+    fun provideDriveServiceFactory(
+        @ApplicationContext context: Context
+    ): DriveServiceFactory = DefaultDriveServiceFactory(context)
 }

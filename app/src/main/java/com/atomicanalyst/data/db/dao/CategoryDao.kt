@@ -14,6 +14,9 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(category: CategoryEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertAll(categories: List<CategoryEntity>)
+
     @Update
     suspend fun update(category: CategoryEntity)
 
@@ -23,6 +26,12 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE id = :id")
     suspend fun getById(id: String): CategoryEntity?
 
+    @Query("SELECT * FROM categories")
+    suspend fun getAll(): List<CategoryEntity>
+
     @Query("SELECT * FROM categories ORDER BY name")
     fun observeAll(): Flow<List<CategoryEntity>>
+
+    @Query("DELETE FROM categories")
+    suspend fun clearAll()
 }

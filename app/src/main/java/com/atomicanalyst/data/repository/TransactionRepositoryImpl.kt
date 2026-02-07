@@ -2,6 +2,7 @@ package com.atomicanalyst.data.repository
 
 import com.atomicanalyst.data.BaseRepository
 import com.atomicanalyst.data.db.dao.TransactionDao
+import com.atomicanalyst.data.db.dao.TransactionTagDao
 import com.atomicanalyst.data.db.mapper.toDomain
 import com.atomicanalyst.data.db.mapper.toEntity
 import com.atomicanalyst.data.db.entity.TransactionTagCrossRef
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class TransactionRepositoryImpl @Inject constructor(
-    private val transactionDao: TransactionDao
+    private val transactionDao: TransactionDao,
+    private val transactionTagDao: TransactionTagDao
 ) : BaseRepository(), TransactionRepository {
     override suspend fun upsert(transaction: Transaction): Result<Unit> = safeCall {
         transactionDao.upsert(transaction.toEntity())
@@ -30,14 +32,14 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getById(id: String): Result<Transaction?> = safeCall {
-        transactionDao.getWithTags(id)?.toDomain()
+        transactionTagDao.getWithTags(id)?.toDomain()
     }
 
-    override fun observeAll(): Flow<List<Transaction>> = transactionDao.observeAllWithTags()
+    override fun observeAll(): Flow<List<Transaction>> = transactionTagDao.observeAllWithTags()
         .map { transactions -> transactions.map { it.toDomain() } }
 
     private suspend fun updateTags(transaction: Transaction) {
-        transactionDao.clearTagsForTransaction(transaction.id)
+        transactionTagDao.clearTagsForTransaction(transaction.id)
         val refs = transaction.tags.distinct().map { tagId ->
             TransactionTagCrossRef(
                 transactionId = transaction.id,
@@ -45,7 +47,7 @@ class TransactionRepositoryImpl @Inject constructor(
             )
         }
         if (refs.isNotEmpty()) {
-            transactionDao.upsertTagCrossRefs(refs)
+            transactionTagDao.upsertTagCrossRefs(refs)
         }
     }
 }

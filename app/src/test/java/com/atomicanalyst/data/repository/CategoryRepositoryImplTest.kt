@@ -23,6 +23,11 @@ class CategoryRepositoryImplTest {
             emit()
         }
 
+        override suspend fun upsertAll(categories: List<CategoryEntity>) {
+            categories.forEach { items[it.id] = it }
+            emit()
+        }
+
         override suspend fun update(category: CategoryEntity) {
             items[category.id] = category
             emit()
@@ -35,7 +40,14 @@ class CategoryRepositoryImplTest {
 
         override suspend fun getById(id: String): CategoryEntity? = items[id]
 
+        override suspend fun getAll(): List<CategoryEntity> = items.values.toList()
+
         override fun observeAll(): Flow<List<CategoryEntity>> = flow
+
+        override suspend fun clearAll() {
+            items.clear()
+            emit()
+        }
 
         private fun emit() {
             flow.value = items.values.sortedBy { it.name }

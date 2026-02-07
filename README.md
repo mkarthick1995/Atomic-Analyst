@@ -100,8 +100,8 @@ Linux/macOS:
 
 ## Project Status
 
-Current Phase: Phase 3 - Transaction Data Layer (In Progress)
-Overall Progress: 22%
+Current Phase: Phase 2 - Authentication and Data Security (In Progress)
+Overall Progress: 24%
 Last Updated: February 7, 2026
 
 ### Completed
@@ -111,11 +111,12 @@ Last Updated: February 7, 2026
 - Secure storage, session management, backup crypto scaffolding
 - Encrypted backup manager and scheduler scaffolding
 - SQLCipher support wired into Room builder
+- Google Drive cloud backup integration (appDataFolder; requires sign-in UI)
 
 ### Next Steps
-- Phase 3: finalize Room schema, repositories, and mappings
-- Resume Phase 2: certificate pinning with real host pins
-- Phase 2: cloud backup (Drive/OneDrive) and remaining security tests
+- Phase 2: certificate pinning with real host pins
+- Phase 2: security tests and Drive sign-in UI for cloud backups
+- Phase 3: database tests and integrity checks
 
 ## Architecture
 
@@ -139,7 +140,7 @@ Each layer is independent and testable, with dependency injection via Hilt.
 
 ### Data Security and Backup (Phase 2 - mandatory)
 - Local encrypted backup and restore implemented
-- Cloud backup (Drive/OneDrive) pending
+- Cloud backup: Google Drive appDataFolder implemented (sign-in UI pending)
 - Status: In progress; must complete before release
 
 ### Performance Targets
@@ -185,4 +186,4 @@ Proprietary - Internal Project
 ---
 
 Created: January 10, 2026
-Status: In Progress (Phase 3, Phase 2 pending items)
+Status: In Progress (Phase 2; Phase 3 groundwork started)

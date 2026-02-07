@@ -1,18 +1,18 @@
 package com.atomicanalyst.data.backup
 
-import com.atomicanalyst.data.auth.AuthLocalStore
-import com.atomicanalyst.domain.error.AppException
-import com.atomicanalyst.utils.Clock
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Serializable
 data class BackupPayload(
     val version: Int,
     val createdAtEpochMs: Long,
-    val auth: AuthBackup?
+    val auth: AuthBackup?,
+    val accounts: List<AccountBackup> = emptyList(),
+    val categories: List<CategoryBackup> = emptyList(),
+    val tags: List<TagBackup> = emptyList(),
+    val transactions: List<TransactionBackup> = emptyList(),
+    val transactionTags: List<TransactionTagBackup> = emptyList(),
+    val reconciliationLogs: List<ReconciliationLogBackup> = emptyList()
 )
 
 @Serializable
@@ -22,44 +22,65 @@ data class AuthBackup(
     val biometricEnabled: Boolean
 )
 
-class AppBackupDataSource(
-    private val authLocalStore: AuthLocalStore,
-    private val clock: Clock
-) : BackupDataSource {
-    override suspend fun exportData(): ByteArray {
-        val credentials = authLocalStore.loadCredentials()
-        val auth = credentials?.let {
-            AuthBackup(
-                userId = it.userId,
-                passwordHash = it.passwordHash,
-                biometricEnabled = authLocalStore.isBiometricEnabled()
-            )
-        }
-        val payload = BackupPayload(
-            version = CURRENT_VERSION,
-            createdAtEpochMs = clock.now(),
-            auth = auth
-        )
-        return Json.encodeToString(payload).encodeToByteArray()
-    }
+@Serializable
+data class AccountBackup(
+    val id: String,
+    val name: String,
+    val accountNumber: String,
+    val type: com.atomicanalyst.domain.model.AccountType,
+    val institution: String,
+    val balanceCents: Long,
+    val currency: String,
+    val isActive: Boolean,
+    val createdAtEpochMs: Long,
+    val updatedAtEpochMs: Long
+)
 
-    override suspend fun importData(data: ByteArray) {
-        val payload = try {
-            Json.decodeFromString<BackupPayload>(data.decodeToString())
-        } catch (exception: SerializationException) {
-            throw AppException.Validation("Invalid backup payload", exception)
-        } catch (exception: IllegalArgumentException) {
-            throw AppException.Validation("Invalid backup payload", exception)
-        }
-        if (payload.version != CURRENT_VERSION) {
-            throw AppException.Validation("Unsupported backup version")
-        }
-        val auth = payload.auth ?: return
-        authLocalStore.saveCredentials(auth.userId, auth.passwordHash)
-        authLocalStore.setBiometricEnabled(auth.biometricEnabled)
-    }
+@Serializable
+data class CategoryBackup(
+    val id: String,
+    val name: String,
+    val type: com.atomicanalyst.domain.model.TransactionCategory?,
+    val isSystem: Boolean,
+    val createdAtEpochMs: Long,
+    val updatedAtEpochMs: Long
+)
 
-    companion object {
-        private const val CURRENT_VERSION = 1
-    }
-}
+@Serializable
+data class TagBackup(
+    val id: String,
+    val name: String,
+    val createdAtEpochMs: Long
+)
+
+@Serializable
+data class TransactionBackup(
+    val id: String,
+    val accountId: String,
+    val categoryId: String?,
+    val amountCents: Long,
+    val currency: String,
+    val description: String,
+    val timestampEpochMs: Long,
+    val source: com.atomicanalyst.domain.model.TransactionSource,
+    val notes: String?,
+    val isReconciled: Boolean,
+    val relatedTransactionId: String?
+)
+
+@Serializable
+data class TransactionTagBackup(
+    val transactionId: String,
+    val tagId: String
+)
+
+@Serializable
+data class ReconciliationLogBackup(
+    val id: String,
+    val primaryTransactionId: String,
+    val relatedTransactionIds: List<String>,
+    val action: com.atomicanalyst.domain.model.ReconciliationAction,
+    val timestampEpochMs: Long,
+    val userId: String,
+    val reason: String?
+)

@@ -86,6 +86,12 @@
   
   // Security
   androidx.security:security-crypto:1.1.0-alpha06
+
+  // Cloud Backup (Google Drive)
+  com.google.android.gms:play-services-auth:21.5.0
+  com.google.api-client:google-api-client-android:2.8.1
+  com.google.api-client:google-api-client-gson:2.8.1
+  com.google.apis:google-api-services-drive:v3-rev20240509-2.0.0
   
   // PDF & Image Processing
   com.itextpdf:itext7-core:7.2.5
@@ -245,7 +251,7 @@
 
   **Backup Strategies:**
   1. **Cloud Backup (Recommended)**
-     - Automatic encrypted backup to user's cloud storage (Google Drive/OneDrive)
+     - Automatic encrypted backup to user's cloud storage (Google Drive appDataFolder)
      - Restore on app reinstall
      - Manual trigger for backup
      - Scheduled daily backups

@@ -25,8 +25,23 @@ class ReconciliationLogRepositoryImplTest {
             emit()
         }
 
+        override suspend fun upsertAll(logs: List<ReconciliationLogEntity>) {
+            logs.forEach { log ->
+                items.removeAll { it.id == log.id }
+                items.add(log)
+            }
+            emit()
+        }
+
+        override suspend fun getAll(): List<ReconciliationLogEntity> = items.toList()
+
         override fun observeLogs(transactionId: String): Flow<List<ReconciliationLogEntity>> =
             flow.map { logs -> logs.filter { it.primaryTransactionId == transactionId } }
+
+        override suspend fun clearAll() {
+            items.clear()
+            emit()
+        }
 
         private fun emit() {
             flow.value = items.toList()

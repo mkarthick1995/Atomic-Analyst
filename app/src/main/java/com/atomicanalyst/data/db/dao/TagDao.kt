@@ -14,6 +14,9 @@ interface TagDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(tag: TagEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertAll(tags: List<TagEntity>)
+
     @Update
     suspend fun update(tag: TagEntity)
 
@@ -23,6 +26,12 @@ interface TagDao {
     @Query("SELECT * FROM tags WHERE id = :id")
     suspend fun getById(id: String): TagEntity?
 
+    @Query("SELECT * FROM tags")
+    suspend fun getAll(): List<TagEntity>
+
     @Query("SELECT * FROM tags ORDER BY name")
     fun observeAll(): Flow<List<TagEntity>>
+
+    @Query("DELETE FROM tags")
+    suspend fun clearAll()
 }

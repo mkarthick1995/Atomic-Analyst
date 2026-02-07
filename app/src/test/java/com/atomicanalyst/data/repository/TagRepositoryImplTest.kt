@@ -22,6 +22,11 @@ class TagRepositoryImplTest {
             emit()
         }
 
+        override suspend fun upsertAll(tags: List<TagEntity>) {
+            tags.forEach { items[it.id] = it }
+            emit()
+        }
+
         override suspend fun update(tag: TagEntity) {
             items[tag.id] = tag
             emit()
@@ -34,7 +39,14 @@ class TagRepositoryImplTest {
 
         override suspend fun getById(id: String): TagEntity? = items[id]
 
+        override suspend fun getAll(): List<TagEntity> = items.values.toList()
+
         override fun observeAll(): Flow<List<TagEntity>> = flow
+
+        override suspend fun clearAll() {
+            items.clear()
+            emit()
+        }
 
         private fun emit() {
             flow.value = items.values.sortedBy { it.name }

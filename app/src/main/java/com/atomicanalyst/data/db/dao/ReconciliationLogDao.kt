@@ -12,6 +12,15 @@ interface ReconciliationLogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(log: ReconciliationLogEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertAll(logs: List<ReconciliationLogEntity>)
+
+    @Query("SELECT * FROM reconciliation_logs")
+    suspend fun getAll(): List<ReconciliationLogEntity>
+
     @Query("SELECT * FROM reconciliation_logs WHERE primaryTransactionId = :transactionId")
     fun observeLogs(transactionId: String): Flow<List<ReconciliationLogEntity>>
+
+    @Query("DELETE FROM reconciliation_logs")
+    suspend fun clearAll()
 }

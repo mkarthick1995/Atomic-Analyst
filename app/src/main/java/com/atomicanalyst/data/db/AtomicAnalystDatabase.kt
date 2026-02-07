@@ -9,6 +9,7 @@ import com.atomicanalyst.data.db.dao.CategoryDao
 import com.atomicanalyst.data.db.dao.ReconciliationLogDao
 import com.atomicanalyst.data.db.dao.TagDao
 import com.atomicanalyst.data.db.dao.TransactionDao
+import com.atomicanalyst.data.db.dao.TransactionTagDao
 import com.atomicanalyst.data.db.entity.AccountEntity
 import com.atomicanalyst.data.db.entity.CategoryEntity
 import com.atomicanalyst.data.db.entity.ReconciliationLogEntity
@@ -34,5 +35,6 @@ abstract class AtomicAnalystDatabase : RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
     abstract fun tagDao(): TagDao
     abstract fun transactionDao(): TransactionDao
+    abstract fun transactionTagDao(): TransactionTagDao
     abstract fun reconciliationLogDao(): ReconciliationLogDao
 }

@@ -1,6 +1,8 @@
 package com.atomicanalyst.data.backup
 
 import com.atomicanalyst.data.BaseRepository
+import com.atomicanalyst.data.backup.cloud.CloudBackupClient
+import com.atomicanalyst.data.backup.cloud.CloudBackupEntry
 import com.atomicanalyst.domain.error.AppException
 import com.atomicanalyst.domain.model.Result
 import com.atomicanalyst.utils.Clock
@@ -59,6 +61,37 @@ class BackupManager(
     }.also { passphrase?.fill('\u0000') }
 
     fun listBackups(): List<File> = store.listBackups()
+
+    suspend fun uploadToCloud(
+        client: CloudBackupClient,
+        passphrase: CharArray? = null
+    ): Result<CloudBackupEntry> {
+        return when (val local = createBackup(passphrase)) {
+            is Result.Success -> client.uploadBackup(local.data)
+            is Result.Error -> Result.Error(local.exception)
+            Result.Loading -> Result.Loading
+        }
+    }
+
+    suspend fun restoreLatestFromCloud(
+        client: CloudBackupClient,
+        passphrase: CharArray? = null
+    ): Result<Unit> {
+        return when (val cloud = client.listBackups()) {
+            is Result.Success -> {
+                val entry = cloud.data.maxByOrNull { it.modifiedTimeEpochMs }
+                    ?: return Result.Error(AppException.Validation("No cloud backups found"))
+                val destination = store.createBackupFile(entry.modifiedTimeEpochMs)
+                when (val download = client.downloadBackup(entry.id, destination)) {
+                    is Result.Success -> restoreBackup(download.data, passphrase)
+                    is Result.Error -> Result.Error(download.exception)
+                    Result.Loading -> Result.Loading
+                }
+            }
+            is Result.Error -> Result.Error(cloud.exception)
+            Result.Loading -> Result.Loading
+        }
+    }
 
     private fun resolvePassphrase(passphrase: CharArray?): CharArray {
         return passphrase

@@ -9,6 +9,7 @@ import com.atomicanalyst.data.db.dao.CategoryDao
 import com.atomicanalyst.data.db.dao.ReconciliationLogDao
 import com.atomicanalyst.data.db.dao.TagDao
 import com.atomicanalyst.data.db.dao.TransactionDao
+import com.atomicanalyst.data.db.dao.TransactionTagDao
 import com.atomicanalyst.data.security.DatabaseKeyStore
 import com.atomicanalyst.data.security.SecureStorage
 import com.atomicanalyst.utils.Clock
@@ -72,6 +73,10 @@ object DatabaseModule {
     @Provides
     fun provideTransactionDao(database: AtomicAnalystDatabase): TransactionDao =
         database.transactionDao()
+
+    @Provides
+    fun provideTransactionTagDao(database: AtomicAnalystDatabase): TransactionTagDao =
+        database.transactionTagDao()
 
     @Provides
     fun provideReconciliationLogDao(database: AtomicAnalystDatabase): ReconciliationLogDao =

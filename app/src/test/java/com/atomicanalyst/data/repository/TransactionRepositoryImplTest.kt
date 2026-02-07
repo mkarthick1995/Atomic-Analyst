@@ -1,7 +1,11 @@
+@file:Suppress("TooManyFunctions")
+
 package com.atomicanalyst.data.repository
 
 import com.atomicanalyst.data.db.dao.TransactionDao
+import com.atomicanalyst.data.db.dao.TransactionTagDao
 import com.atomicanalyst.data.db.entity.TagEntity
+import com.atomicanalyst.data.db.entity.TagWithTransactions
 import com.atomicanalyst.data.db.entity.TransactionEntity
 import com.atomicanalyst.data.db.entity.TransactionTagCrossRef
 import com.atomicanalyst.data.db.entity.TransactionWithTags
@@ -20,12 +24,15 @@ import org.junit.Test
 class TransactionRepositoryImplTest {
     private class FakeTransactionDao : TransactionDao {
         private val items = mutableMapOf<String, TransactionEntity>()
-        private val crossRefs = mutableSetOf<TransactionTagCrossRef>()
-        private val tags = mutableMapOf<String, TagEntity>()
         private val flow = MutableStateFlow<List<TransactionEntity>>(emptyList())
 
         override suspend fun upsert(transaction: TransactionEntity) {
             items[transaction.id] = transaction
+            emit()
+        }
+
+        override suspend fun upsertAll(transactions: List<TransactionEntity>) {
+            transactions.forEach { items[it.id] = it }
             emit()
         }
 
@@ -36,13 +43,30 @@ class TransactionRepositoryImplTest {
 
         override suspend fun delete(transaction: TransactionEntity) {
             items.remove(transaction.id)
-            crossRefs.removeAll { it.transactionId == transaction.id }
             emit()
         }
 
         override suspend fun getById(id: String): TransactionEntity? = items[id]
 
+        override suspend fun getAll(): List<TransactionEntity> = items.values.toList()
+
         override fun observeAll(): Flow<List<TransactionEntity>> = flow
+
+        override suspend fun clearAll() {
+            items.clear()
+            emit()
+        }
+
+        private fun emit() {
+            flow.value = items.values.sortedByDescending { it.timestampEpochMs }
+        }
+    }
+
+    private class FakeTransactionTagDao(
+        private val transactionDao: FakeTransactionDao
+    ) : TransactionTagDao {
+        private val crossRefs = mutableSetOf<TransactionTagCrossRef>()
+        private val tags = mutableMapOf<String, TagEntity>()
 
         override suspend fun upsertTagCrossRefs(refs: List<TransactionTagCrossRef>) {
             crossRefs.addAll(refs)
@@ -52,8 +76,14 @@ class TransactionRepositoryImplTest {
             crossRefs.removeAll { it.transactionId == transactionId }
         }
 
+        override suspend fun getAllTagCrossRefs(): List<TransactionTagCrossRef> = crossRefs.toList()
+
+        override suspend fun clearAllTagCrossRefs() {
+            crossRefs.clear()
+        }
+
         override suspend fun getWithTags(id: String): TransactionWithTags? {
-            val transaction = items[id] ?: return null
+            val transaction = transactionDao.getById(id) ?: return null
             return TransactionWithTags(
                 transaction = transaction,
                 tags = resolveTags(id)
@@ -61,7 +91,7 @@ class TransactionRepositoryImplTest {
         }
 
         override fun observeAllWithTags(): Flow<List<TransactionWithTags>> =
-            flow.map { list ->
+            transactionDao.observeAll().map { list ->
                 list.map { transaction ->
                     TransactionWithTags(
                         transaction = transaction,
@@ -69,6 +99,12 @@ class TransactionRepositoryImplTest {
                     )
                 }
             }
+
+        override suspend fun getTagWithTransactions(id: String): TagWithTransactions? =
+            throw UnsupportedOperationException("Not needed in test")
+
+        override fun observeAllTagsWithTransactions(): Flow<List<TagWithTransactions>> =
+            throw UnsupportedOperationException("Not needed in test")
 
         fun seedTags(values: List<TagEntity>) {
             values.forEach { tags[it.id] = it }
@@ -79,17 +115,14 @@ class TransactionRepositoryImplTest {
                 .map { it.tagId }
             return tagIds.mapNotNull { tags[it] }
         }
-
-        private fun emit() {
-            flow.value = items.values.sortedByDescending { it.timestampEpochMs }
-        }
     }
 
     @Test
     fun testUpsertAndObserveAll_ReturnsDomainTransaction() = runBlocking {
         val dao = FakeTransactionDao()
-        dao.seedTags(listOf(TagEntity("tag-1", "Bills", 1700000000000L)))
-        val repository = TransactionRepositoryImpl(dao)
+        val tagDao = FakeTransactionTagDao(dao)
+        tagDao.seedTags(listOf(TagEntity("tag-1", "Bills", 1700000000000L)))
+        val repository = TransactionRepositoryImpl(dao, tagDao)
         val transaction = Transaction(
             id = "txn-1",
             accountId = "acct-1",
