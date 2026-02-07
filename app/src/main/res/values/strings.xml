@@ -13,4 +13,5 @@
     <string name="backup_local_restore">Restore latest local backup</string>
     <string name="backup_drive_upload">Upload backup to Drive</string>
     <string name="backup_drive_restore">Restore latest from Drive</string>
+    <string name="nav_accounts">Manage Accounts</string>
 </resources>

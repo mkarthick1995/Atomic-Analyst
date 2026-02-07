@@ -13,10 +13,14 @@ class StandingInstructionValidatorTest {
         val validator = StandingInstructionValidator(FixedClock(1_000L))
         val instruction = StandingInstruction(
             id = "si-1",
+            accountId = "acct-1",
             description = "Rent",
             amountCents = 10_00L,
             frequency = Frequency.MONTHLY,
-            nextExecutionEpochMs = 500L
+            nextExecutionEpochMs = 500L,
+            createdAtEpochMs = 0L,
+            updatedAtEpochMs = 0L,
+            isActive = true
         )
 
         assertThrows(AppException.Validation::class.java) {

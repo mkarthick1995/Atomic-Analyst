@@ -18,11 +18,16 @@ class AtomicAnalystDatabaseMigrationTest {
     )
 
     @Test
-    fun migrate_1_to_1_schemaIsValid() {
+    fun migrate_1_to_2_schemaIsValid() {
         val db = helper.createDatabase(TEST_DB, 1)
         db.close()
 
-        helper.runMigrationsAndValidate(TEST_DB, 1, true)
+        helper.runMigrationsAndValidate(
+            TEST_DB,
+            2,
+            true,
+            DatabaseMigrations.MIGRATION_1_2
+        )
     }
 
     private companion object {

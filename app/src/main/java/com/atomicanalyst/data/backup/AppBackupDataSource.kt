@@ -2,8 +2,10 @@ package com.atomicanalyst.data.backup
 
 import com.atomicanalyst.data.auth.AuthLocalStore
 import com.atomicanalyst.data.db.dao.AccountDao
+import com.atomicanalyst.data.db.dao.AccountLiabilityDao
 import com.atomicanalyst.data.db.dao.CategoryDao
 import com.atomicanalyst.data.db.dao.ReconciliationLogDao
+import com.atomicanalyst.data.db.dao.StandingInstructionDao
 import com.atomicanalyst.data.db.dao.TagDao
 import com.atomicanalyst.data.db.dao.TransactionDao
 import com.atomicanalyst.data.db.dao.TransactionTagDao
@@ -15,7 +17,9 @@ import kotlinx.serialization.json.Json
 
 data class BackupDaos(
     val accountDao: AccountDao,
+    val accountLiabilityDao: AccountLiabilityDao,
     val categoryDao: CategoryDao,
+    val standingInstructionDao: StandingInstructionDao,
     val tagDao: TagDao,
     val transactionDao: TransactionDao,
     val transactionTagDao: TransactionTagDao,
@@ -42,7 +46,9 @@ class AppBackupDataSource(
             createdAtEpochMs = clock.now(),
             auth = auth,
             accounts = daos.accountDao.getAll().map { it.toBackup() },
+            accountLiabilities = daos.accountLiabilityDao.getAll().map { it.toBackup() },
             categories = daos.categoryDao.getAll().map { it.toBackup() },
+            standingInstructions = daos.standingInstructionDao.getAll().map { it.toBackup() },
             tags = daos.tagDao.getAll().map { it.toBackup() },
             transactions = daos.transactionDao.getAll().map { it.toBackup() },
             transactionTags = daos.transactionTagDao.getAllTagCrossRefs().map { it.toBackup() },
@@ -59,7 +65,7 @@ class AppBackupDataSource(
         } catch (exception: IllegalArgumentException) {
             throw AppException.Validation("Invalid backup payload", exception)
         }
-        if (payload.version != CURRENT_VERSION) {
+        if (payload.version !in SUPPORTED_VERSIONS) {
             throw AppException.Validation("Unsupported backup version")
         }
         runInTransaction {
@@ -67,11 +73,19 @@ class AppBackupDataSource(
             daos.transactionTagDao.clearAllTagCrossRefs()
             daos.transactionDao.clearAll()
             daos.tagDao.clearAll()
+            daos.standingInstructionDao.clearAll()
             daos.categoryDao.clearAll()
+            daos.accountLiabilityDao.clearAll()
             daos.accountDao.clearAll()
 
             daos.accountDao.upsertAll(payload.accounts.map { it.toEntity() })
+            daos.accountLiabilityDao.upsertAll(
+                payload.accountLiabilities.map { it.toEntity() }
+            )
             daos.categoryDao.upsertAll(payload.categories.map { it.toEntity() })
+            daos.standingInstructionDao.upsertAll(
+                payload.standingInstructions.map { it.toEntity() }
+            )
             daos.tagDao.upsertAll(payload.tags.map { it.toEntity() })
             daos.transactionDao.upsertAll(payload.transactions.map { it.toEntity() })
             daos.transactionTagDao.upsertTagCrossRefs(
@@ -87,6 +101,7 @@ class AppBackupDataSource(
     }
 
     companion object {
-        private const val CURRENT_VERSION = 2
+        private const val CURRENT_VERSION = 3
+        private val SUPPORTED_VERSIONS = setOf(2, CURRENT_VERSION)
     }
 }

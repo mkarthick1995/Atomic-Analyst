@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.atomicanalyst.presentation.screen.AccountsScreen
 import com.atomicanalyst.presentation.screen.HomeScreen
 
 @Suppress("FunctionNaming")
@@ -15,7 +16,12 @@ fun AppNavGraph(startDestination: String = Screen.Home.route) {
         startDestination = startDestination
     ) {
         composable(Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(onNavigateAccounts = {
+                navController.navigate(Screen.Accounts.route)
+            })
+        }
+        composable(Screen.Accounts.route) {
+            AccountsScreen()
         }
     }
 }

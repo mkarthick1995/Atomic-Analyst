@@ -51,7 +51,9 @@ object BackupModule {
         authLocalStore = authLocalStore,
         daos = BackupDaos(
             accountDao = database.accountDao(),
+            accountLiabilityDao = database.accountLiabilityDao(),
             categoryDao = database.categoryDao(),
+            standingInstructionDao = database.standingInstructionDao(),
             tagDao = database.tagDao(),
             transactionDao = database.transactionDao(),
             transactionTagDao = database.transactionTagDao(),

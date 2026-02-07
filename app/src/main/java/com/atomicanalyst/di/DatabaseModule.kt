@@ -5,8 +5,10 @@ import androidx.room.Room
 import com.atomicanalyst.data.db.AtomicAnalystDatabase
 import com.atomicanalyst.data.db.DatabaseMigrations
 import com.atomicanalyst.data.db.dao.AccountDao
+import com.atomicanalyst.data.db.dao.AccountLiabilityDao
 import com.atomicanalyst.data.db.dao.CategoryDao
 import com.atomicanalyst.data.db.dao.ReconciliationLogDao
+import com.atomicanalyst.data.db.dao.StandingInstructionDao
 import com.atomicanalyst.data.db.dao.TagDao
 import com.atomicanalyst.data.db.dao.TransactionDao
 import com.atomicanalyst.data.db.dao.TransactionTagDao
@@ -65,10 +67,19 @@ object DatabaseModule {
     fun provideAccountDao(database: AtomicAnalystDatabase): AccountDao = database.accountDao()
 
     @Provides
+    fun provideAccountLiabilityDao(database: AtomicAnalystDatabase): AccountLiabilityDao =
+        database.accountLiabilityDao()
+
+    @Provides
     fun provideCategoryDao(database: AtomicAnalystDatabase): CategoryDao = database.categoryDao()
 
     @Provides
     fun provideTagDao(database: AtomicAnalystDatabase): TagDao = database.tagDao()
+
+    @Provides
+    fun provideStandingInstructionDao(
+        database: AtomicAnalystDatabase
+    ): StandingInstructionDao = database.standingInstructionDao()
 
     @Provides
     fun provideTransactionDao(database: AtomicAnalystDatabase): TransactionDao =

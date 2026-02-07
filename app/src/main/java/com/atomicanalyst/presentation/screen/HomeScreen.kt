@@ -34,6 +34,7 @@ import java.util.Date
 @Suppress("FunctionNaming")
 @Composable
 fun HomeScreen(
+    onNavigateAccounts: () -> Unit,
     viewModel: BackupViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -59,6 +60,12 @@ fun HomeScreen(
                 text = stringResource(R.string.backup_title),
                 style = MaterialTheme.typography.headlineSmall
             )
+            Button(
+                onClick = onNavigateAccounts,
+                enabled = !state.isBusy
+            ) {
+                Text(text = stringResource(R.string.nav_accounts))
+            }
             Text(
                 text = stringResource(R.string.backup_status_sign_in, state.signedInEmail ?: "Not connected"),
                 style = MaterialTheme.typography.bodyMedium

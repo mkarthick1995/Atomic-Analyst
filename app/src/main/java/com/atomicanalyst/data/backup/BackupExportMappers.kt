@@ -1,8 +1,10 @@
 package com.atomicanalyst.data.backup
 
 import com.atomicanalyst.data.db.entity.AccountEntity
+import com.atomicanalyst.data.db.entity.AccountLiabilityCrossRef
 import com.atomicanalyst.data.db.entity.CategoryEntity
 import com.atomicanalyst.data.db.entity.ReconciliationLogEntity
+import com.atomicanalyst.data.db.entity.StandingInstructionEntity
 import com.atomicanalyst.data.db.entity.TagEntity
 import com.atomicanalyst.data.db.entity.TransactionEntity
 import com.atomicanalyst.data.db.entity.TransactionTagCrossRef
@@ -21,6 +23,11 @@ fun AccountEntity.toBackup(): AccountBackup = AccountBackup(
     updatedAtEpochMs = updatedAtEpochMs
 )
 
+fun AccountLiabilityCrossRef.toBackup(): AccountLiabilityBackup = AccountLiabilityBackup(
+    accountId = accountId,
+    liabilityAccountId = liabilityAccountId
+)
+
 fun CategoryEntity.toBackup(): CategoryBackup = CategoryBackup(
     id = id,
     name = name,
@@ -28,6 +35,18 @@ fun CategoryEntity.toBackup(): CategoryBackup = CategoryBackup(
     isSystem = isSystem,
     createdAtEpochMs = createdAtEpochMs,
     updatedAtEpochMs = updatedAtEpochMs
+)
+
+fun StandingInstructionEntity.toBackup(): StandingInstructionBackup = StandingInstructionBackup(
+    id = id,
+    accountId = accountId,
+    description = description,
+    amountCents = amountCents,
+    frequency = frequency,
+    nextExecutionEpochMs = nextExecutionEpochMs,
+    createdAtEpochMs = createdAtEpochMs,
+    updatedAtEpochMs = updatedAtEpochMs,
+    isActive = isActive
 )
 
 fun TagEntity.toBackup(): TagBackup = TagBackup(

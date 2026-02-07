@@ -2,6 +2,7 @@ package com.atomicanalyst.data.db.converter
 
 import androidx.room.TypeConverter
 import com.atomicanalyst.domain.model.AccountType
+import com.atomicanalyst.domain.model.Frequency
 import com.atomicanalyst.domain.model.ReconciliationAction
 import com.atomicanalyst.domain.model.TransactionCategory
 import com.atomicanalyst.domain.model.TransactionSource
@@ -33,4 +34,11 @@ class EnumConverters {
     @TypeConverter
     fun stringToReconciliationAction(value: String?): ReconciliationAction? =
         value?.let { enumValueOf<ReconciliationAction>(it) }
+
+    @TypeConverter
+    fun frequencyToString(value: Frequency?): String? = value?.name
+
+    @TypeConverter
+    fun stringToFrequency(value: String?): Frequency? =
+        value?.let { enumValueOf<Frequency>(it) }
 }

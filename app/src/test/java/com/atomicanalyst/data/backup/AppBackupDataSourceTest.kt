@@ -4,14 +4,18 @@ package com.atomicanalyst.data.backup
 
 import com.atomicanalyst.data.auth.AuthLocalStore
 import com.atomicanalyst.data.db.dao.AccountDao
+import com.atomicanalyst.data.db.dao.AccountLiabilityDao
 import com.atomicanalyst.data.db.dao.CategoryDao
 import com.atomicanalyst.data.db.dao.ReconciliationLogDao
+import com.atomicanalyst.data.db.dao.StandingInstructionDao
 import com.atomicanalyst.data.db.dao.TagDao
 import com.atomicanalyst.data.db.dao.TransactionDao
 import com.atomicanalyst.data.db.dao.TransactionTagDao
 import com.atomicanalyst.data.db.entity.AccountEntity
+import com.atomicanalyst.data.db.entity.AccountLiabilityCrossRef
 import com.atomicanalyst.data.db.entity.CategoryEntity
 import com.atomicanalyst.data.db.entity.ReconciliationLogEntity
+import com.atomicanalyst.data.db.entity.StandingInstructionEntity
 import com.atomicanalyst.data.db.entity.TagEntity
 import com.atomicanalyst.data.db.entity.TagWithTransactions
 import com.atomicanalyst.data.db.entity.TransactionEntity
@@ -40,7 +44,9 @@ class AppBackupDataSourceTest {
         authStore.saveCredentials("user1", "hash123")
         authStore.setBiometricEnabled(true)
         val accountDao = FakeAccountDao()
+        val accountLiabilityDao = FakeAccountLiabilityDao()
         val categoryDao = FakeCategoryDao()
+        val standingInstructionDao = FakeStandingInstructionDao()
         val tagDao = FakeTagDao()
         val transactionDao = FakeTransactionDao()
         val logDao = FakeReconciliationLogDao()
@@ -58,6 +64,26 @@ class AppBackupDataSourceTest {
                     isActive = true,
                     createdAtEpochMs = 1_000L,
                     updatedAtEpochMs = 2_000L
+                ),
+                AccountEntity(
+                    id = "acct-2",
+                    name = "Loan",
+                    accountNumber = "5678",
+                    type = AccountType.LOAN,
+                    institution = "Bank",
+                    balanceCents = -50_00L,
+                    currency = "USD",
+                    isActive = true,
+                    createdAtEpochMs = 1_500L,
+                    updatedAtEpochMs = 2_500L
+                )
+            )
+        )
+        accountLiabilityDao.upsertAll(
+            listOf(
+                AccountLiabilityCrossRef(
+                    accountId = "acct-1",
+                    liabilityAccountId = "acct-2"
                 )
             )
         )
@@ -70,6 +96,21 @@ class AppBackupDataSourceTest {
                     isSystem = true,
                     createdAtEpochMs = 1_000L,
                     updatedAtEpochMs = 2_000L
+                )
+            )
+        )
+        standingInstructionDao.upsertAll(
+            listOf(
+                StandingInstructionEntity(
+                    id = "si-1",
+                    accountId = "acct-1",
+                    description = "Rent",
+                    amountCents = 20_00L,
+                    frequency = com.atomicanalyst.domain.model.Frequency.MONTHLY,
+                    nextExecutionEpochMs = 9_000L,
+                    createdAtEpochMs = 1_000L,
+                    updatedAtEpochMs = 1_500L,
+                    isActive = true
                 )
             )
         )
@@ -124,7 +165,9 @@ class AppBackupDataSourceTest {
             authLocalStore = authStore,
             daos = BackupDaos(
                 accountDao = accountDao,
+                accountLiabilityDao = accountLiabilityDao,
                 categoryDao = categoryDao,
+                standingInstructionDao = standingInstructionDao,
                 tagDao = tagDao,
                 transactionDao = transactionDao,
                 transactionTagDao = transactionTagDao,
@@ -137,14 +180,16 @@ class AppBackupDataSourceTest {
         val bytes = dataSource.exportData()
         val payload = Json.decodeFromString<BackupPayload>(bytes.decodeToString())
 
-        assertEquals(2, payload.version)
+        assertEquals(3, payload.version)
         assertEquals(1_000L, payload.createdAtEpochMs)
         assertNotNull(payload.auth)
         assertEquals("user1", payload.auth?.userId)
         assertEquals("hash123", payload.auth?.passwordHash)
         assertTrue(payload.auth?.biometricEnabled == true)
-        assertEquals(1, payload.accounts.size)
+        assertEquals(2, payload.accounts.size)
+        assertEquals(1, payload.accountLiabilities.size)
         assertEquals(1, payload.categories.size)
+        assertEquals(1, payload.standingInstructions.size)
         assertEquals(1, payload.tags.size)
         assertEquals(1, payload.transactions.size)
         assertEquals(1, payload.transactionTags.size)
@@ -156,7 +201,9 @@ class AppBackupDataSourceTest {
         val storage = InMemorySecureStorage()
         val authStore = AuthLocalStore(storage)
         val accountDao = FakeAccountDao()
+        val accountLiabilityDao = FakeAccountLiabilityDao()
         val categoryDao = FakeCategoryDao()
+        val standingInstructionDao = FakeStandingInstructionDao()
         val tagDao = FakeTagDao()
         val transactionDao = FakeTransactionDao()
         val logDao = FakeReconciliationLogDao()
@@ -165,7 +212,9 @@ class AppBackupDataSourceTest {
             authLocalStore = authStore,
             daos = BackupDaos(
                 accountDao = accountDao,
+                accountLiabilityDao = accountLiabilityDao,
                 categoryDao = categoryDao,
+                standingInstructionDao = standingInstructionDao,
                 tagDao = tagDao,
                 transactionDao = transactionDao,
                 transactionTagDao = transactionTagDao,
@@ -175,7 +224,7 @@ class AppBackupDataSourceTest {
             clock = FixedClock(1_000L)
         )
         val payload = BackupPayload(
-            version = 2,
+            version = 3,
             createdAtEpochMs = 1_000L,
             auth = AuthBackup(
                 userId = "user1",
@@ -196,6 +245,12 @@ class AppBackupDataSourceTest {
                     updatedAtEpochMs = 2_000L
                 )
             ),
+            accountLiabilities = listOf(
+                AccountLiabilityBackup(
+                    accountId = "acct-1",
+                    liabilityAccountId = "acct-2"
+                )
+            ),
             categories = listOf(
                 CategoryBackup(
                     id = "cat-1",
@@ -204,6 +259,19 @@ class AppBackupDataSourceTest {
                     isSystem = true,
                     createdAtEpochMs = 1_000L,
                     updatedAtEpochMs = 2_000L
+                )
+            ),
+            standingInstructions = listOf(
+                StandingInstructionBackup(
+                    id = "si-1",
+                    accountId = "acct-1",
+                    description = "Rent",
+                    amountCents = 20_00L,
+                    frequency = com.atomicanalyst.domain.model.Frequency.MONTHLY,
+                    nextExecutionEpochMs = 9_000L,
+                    createdAtEpochMs = 1_000L,
+                    updatedAtEpochMs = 1_500L,
+                    isActive = true
                 )
             ),
             tags = listOf(
@@ -255,7 +323,9 @@ class AppBackupDataSourceTest {
         assertEquals("hash123", creds?.passwordHash)
         assertTrue(authStore.isBiometricEnabled())
         assertEquals(1, accountDao.getAll().size)
+        assertEquals(1, accountLiabilityDao.getAll().size)
         assertEquals(1, categoryDao.getAll().size)
+        assertEquals(1, standingInstructionDao.getAll().size)
         assertEquals(1, tagDao.getAll().size)
         assertEquals(1, transactionDao.getAll().size)
         assertEquals(1, transactionTagDao.getAllTagCrossRefs().size)
@@ -293,6 +363,33 @@ private class FakeAccountDao : AccountDao {
     }
 }
 
+private class FakeAccountLiabilityDao : AccountLiabilityDao {
+    private val refs = mutableListOf<AccountLiabilityCrossRef>()
+
+    override suspend fun upsertAll(refs: List<AccountLiabilityCrossRef>) {
+        this.refs.addAll(refs)
+    }
+
+    override suspend fun clearForAccount(accountId: String) {
+        refs.removeAll { it.accountId == accountId }
+    }
+
+    override suspend fun getLiabilityIds(accountId: String): List<String> =
+        refs.filter { it.accountId == accountId }.map { it.liabilityAccountId }
+
+    override suspend fun getAccountIds(liabilityAccountId: String): List<String> =
+        refs.filter { it.liabilityAccountId == liabilityAccountId }.map { it.accountId }
+
+    override fun observeLiabilityRefs(accountId: String) =
+        throw UnsupportedOperationException("Not needed in test")
+
+    override suspend fun getAll(): List<AccountLiabilityCrossRef> = refs.toList()
+
+    override suspend fun clearAll() {
+        refs.clear()
+    }
+}
+
 private class FakeCategoryDao : CategoryDao {
     private val items = linkedMapOf<String, CategoryEntity>()
 
@@ -317,6 +414,40 @@ private class FakeCategoryDao : CategoryDao {
     override suspend fun getAll(): List<CategoryEntity> = items.values.toList()
 
     override fun observeAll() = throw UnsupportedOperationException("Not needed in test")
+
+    override suspend fun clearAll() {
+        items.clear()
+    }
+}
+
+private class FakeStandingInstructionDao : StandingInstructionDao {
+    private val items = linkedMapOf<String, StandingInstructionEntity>()
+
+    override suspend fun upsert(instruction: StandingInstructionEntity) {
+        items[instruction.id] = instruction
+    }
+
+    override suspend fun upsertAll(instructions: List<StandingInstructionEntity>) {
+        instructions.forEach { items[it.id] = it }
+    }
+
+    override suspend fun update(instruction: StandingInstructionEntity) {
+        items[instruction.id] = instruction
+    }
+
+    override suspend fun delete(instruction: StandingInstructionEntity) {
+        items.remove(instruction.id)
+    }
+
+    override suspend fun getById(id: String): StandingInstructionEntity? = items[id]
+
+    override suspend fun getByAccountId(accountId: String): List<StandingInstructionEntity> =
+        items.values.filter { it.accountId == accountId }
+
+    override fun observeByAccountId(accountId: String) =
+        throw UnsupportedOperationException("Not needed in test")
+
+    override suspend fun getAll(): List<StandingInstructionEntity> = items.values.toList()
 
     override suspend fun clearAll() {
         items.clear()

@@ -8,7 +8,9 @@ data class BackupPayload(
     val createdAtEpochMs: Long,
     val auth: AuthBackup?,
     val accounts: List<AccountBackup> = emptyList(),
+    val accountLiabilities: List<AccountLiabilityBackup> = emptyList(),
     val categories: List<CategoryBackup> = emptyList(),
+    val standingInstructions: List<StandingInstructionBackup> = emptyList(),
     val tags: List<TagBackup> = emptyList(),
     val transactions: List<TransactionBackup> = emptyList(),
     val transactionTags: List<TransactionTagBackup> = emptyList(),
@@ -37,6 +39,12 @@ data class AccountBackup(
 )
 
 @Serializable
+data class AccountLiabilityBackup(
+    val accountId: String,
+    val liabilityAccountId: String
+)
+
+@Serializable
 data class CategoryBackup(
     val id: String,
     val name: String,
@@ -44,6 +52,19 @@ data class CategoryBackup(
     val isSystem: Boolean,
     val createdAtEpochMs: Long,
     val updatedAtEpochMs: Long
+)
+
+@Serializable
+data class StandingInstructionBackup(
+    val id: String,
+    val accountId: String,
+    val description: String,
+    val amountCents: Long,
+    val frequency: com.atomicanalyst.domain.model.Frequency,
+    val nextExecutionEpochMs: Long,
+    val createdAtEpochMs: Long,
+    val updatedAtEpochMs: Long,
+    val isActive: Boolean
 )
 
 @Serializable

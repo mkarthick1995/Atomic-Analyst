@@ -8,6 +8,9 @@ class StandingInstructionValidator @javax.inject.Inject constructor(
     private val clock: Clock
 ) {
     fun validate(instruction: StandingInstruction) {
+        if (instruction.accountId.isBlank()) {
+            throw AppException.Validation("Instruction account is required")
+        }
         if (instruction.description.isBlank()) {
             throw AppException.Validation("Instruction description is required")
         }

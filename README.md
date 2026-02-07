@@ -108,7 +108,7 @@ CERT_PINS=api.example.com=sha256/BASE64PIN,cdn.example.com=sha256/BASE64PIN
 ## Project Status
 
 Current Phase: Phase 4 - Account Management (In Progress)
-Overall Progress: 32%
+Overall Progress: 34%
 Last Updated: February 7, 2026
 
 ### Completed
@@ -120,10 +120,12 @@ Last Updated: February 7, 2026
 - SQLCipher support wired into Room builder
 - Google Drive cloud backup integration (appDataFolder) with sign-in UI
 - Certificate pinning configurable via `CERT_PINS` (TLS-only client)
+- Account service use cases and balance calculation utilities
+- Basic account list/add UI
 
 ### Next Steps
-- Phase 4: account service expansion (liability linking, standing instructions)
-- Phase 4: account UI flows (list/detail/add/edit)
+- Phase 4: account edit/delete and liability linking UI
+- Phase 4: standing instruction UI + persistence
 
 ## Architecture
 

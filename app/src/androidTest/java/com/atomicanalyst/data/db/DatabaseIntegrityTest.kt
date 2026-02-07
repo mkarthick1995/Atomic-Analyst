@@ -4,11 +4,14 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.atomicanalyst.data.db.entity.AccountEntity
+import com.atomicanalyst.data.db.entity.AccountLiabilityCrossRef
 import com.atomicanalyst.data.db.entity.CategoryEntity
+import com.atomicanalyst.data.db.entity.StandingInstructionEntity
 import com.atomicanalyst.data.db.entity.TagEntity
 import com.atomicanalyst.data.db.entity.TransactionEntity
 import com.atomicanalyst.data.db.entity.TransactionTagCrossRef
 import com.atomicanalyst.domain.model.AccountType
+import com.atomicanalyst.domain.model.Frequency
 import com.atomicanalyst.domain.model.TransactionCategory
 import com.atomicanalyst.domain.model.TransactionSource
 import kotlinx.coroutines.runBlocking
@@ -41,6 +44,8 @@ class DatabaseIntegrityTest {
     @Test
     fun deletingAccount_CascadesToTransactionsAndTags() = runBlocking {
         val accountDao = db.accountDao()
+        val accountLiabilityDao = db.accountLiabilityDao()
+        val standingInstructionDao = db.standingInstructionDao()
         val transactionDao = db.transactionDao()
         val tagDao = db.tagDao()
         val transactionTagDao = db.transactionTagDao()
@@ -59,6 +64,20 @@ class DatabaseIntegrityTest {
                 updatedAtEpochMs = 2_000L
             )
         )
+        accountDao.upsert(
+            AccountEntity(
+                id = "acct-2",
+                name = "Loan",
+                accountNumber = "5678",
+                type = AccountType.LOAN,
+                institution = "Bank",
+                balanceCents = -100_00L,
+                currency = "USD",
+                isActive = true,
+                createdAtEpochMs = 1_500L,
+                updatedAtEpochMs = 2_500L
+            )
+        )
         val transaction = TransactionEntity(
             id = "txn-1",
             accountId = "acct-1",
@@ -72,11 +91,31 @@ class DatabaseIntegrityTest {
             isReconciled = false,
             relatedTransactionId = null
         )
+        val instruction = StandingInstructionEntity(
+            id = "si-1",
+            accountId = "acct-1",
+            description = "Rent",
+            amountCents = 20_00L,
+            frequency = Frequency.MONTHLY,
+            nextExecutionEpochMs = 9_000L,
+            createdAtEpochMs = 1_000L,
+            updatedAtEpochMs = 1_500L,
+            isActive = true
+        )
         val tag = TagEntity(
             id = "tag-1",
             name = "Bills",
             createdAtEpochMs = 1_000L
         )
+        accountLiabilityDao.upsertAll(
+            listOf(
+                AccountLiabilityCrossRef(
+                    accountId = "acct-1",
+                    liabilityAccountId = "acct-2"
+                )
+            )
+        )
+        standingInstructionDao.upsert(instruction)
         transactionDao.upsert(transaction)
         tagDao.upsert(tag)
         transactionTagDao.upsertTagCrossRefs(
@@ -87,6 +126,8 @@ class DatabaseIntegrityTest {
 
         assertNull(transactionDao.getById("txn-1"))
         assertEquals(0, transactionTagDao.getAllTagCrossRefs().size)
+        assertEquals(0, accountLiabilityDao.getAll().size)
+        assertEquals(0, standingInstructionDao.getAll().size)
     }
 
     @Test

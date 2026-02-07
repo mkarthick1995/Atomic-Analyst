@@ -3,7 +3,7 @@
 **Purpose:** Track all implemented features, code changes, and project milestones  
 **Last Updated:** February 7, 2026
 **Current Phase:** Phase 4 - Account Management
-**Overall Progress:** 32%
+**Overall Progress:** 34%
 
 ---
 
@@ -193,17 +193,17 @@
 **Status:** In Progress
 
 - [ ] **Account Model**
-  - [x] Create Account data class
-  - [x] Create AccountType enum
-  - [x] Create StandingInstruction data class
-  - [x] Create Frequency enum
+  - [x] Create `Account` data class
+  - [x] Create `AccountType` enum
+  - [x] Create `StandingInstruction` data class
+  - [x] Create `Frequency` enum
 
 - [ ] **Account Service**
   - [x] Implement add account logic
   - [x] Implement update account logic
   - [x] Implement delete account logic
   - [x] Implement account activation/deactivation
-  - [ ] Implement liability linking
+  - [x] Implement liability linking
 
 - [ ] **Balance Tracking**
   - [x] Implement balance calculation logic
@@ -218,9 +218,9 @@
   - [x] Test account queries
 
 **Deliverables:**
-- [ ] Account management system working
+- [x] Account management system working
 - [x] Balance calculations accurate
-- [ ] Multi-account support functional
+- [x] Multi-account support functional
 - [x] Account tests passing
 - [x] Build passes with 0 errors
 
@@ -784,7 +784,7 @@
 | Phase 1 | - | - | ✅ Completed | 100% |
 | Phase 2 | - | - | âœ… Completed | 100% |
 | Phase 3 | - | - | ⏳ In Progress | 70% |
-| Phase 4 | - | - | â³ In Progress | 40% |
+| Phase 4 | - | - | In Progress | 40% |
 | Phase 5 | - | - | ⏳ Not Started | 0% |
 | Phase 6 | - | - | ⏳ Not Started | 0% |
 | Phase 7 | - | - | ⏳ Not Started | 0% |
@@ -796,13 +796,14 @@
 | Phase 13 | - | - | ⏳ Not Started | 0% |
 | Phase 14 | - | - | ⏳ Not Started | 0% |
 
-**Overall MVP Progress: 32%**
+**Overall MVP Progress: 34%**
 
 ---
 
 ## 📝 Recent Changes Log
 
 ### February 7, 2026
+- Added account management use cases, liability linking, and basic account UI
 - Started Phase 4 account management usecases, validators, and balance tracking logic
 - Added Room DAO, integrity, and migration tests (androidTest)
 - Added Google Drive sign-in UI for backup flows
@@ -850,8 +851,8 @@
 
 ## 🎯 Next Steps
 
-1. Implement liability linking for accounts
-2. Add account UI flows (list/detail/add/edit)
+1. Add account edit/delete flows and liabilities UI
+2. Persist standing instructions in UI
 3. Validate Room schema export/migration plan for next version
 
 ---
