@@ -100,8 +100,8 @@ Linux/macOS:
 
 ## Project Status
 
-Current Phase: Phase 2 - Authentication and Data Security (In Progress)
-Overall Progress: 18%
+Current Phase: Phase 3 - Transaction Data Layer (In Progress)
+Overall Progress: 22%
 Last Updated: February 7, 2026
 
 ### Completed
@@ -109,11 +109,13 @@ Last Updated: February 7, 2026
 - Toolchain stabilized (Gradle 8.13, AGP 8.13.2, Kotlin 2.3.0, Hilt 2.58)
 - Local authentication foundations (register/login/logout)
 - Secure storage, session management, backup crypto scaffolding
+- Encrypted backup manager and scheduler scaffolding
+- SQLCipher support wired into Room builder
 
 ### Next Steps
-- Continue Phase 2: SQLCipher wired to Room (requires Phase 3 DB)
-- Add certificate pinning with real host pins
-- Cloud backup (Drive/OneDrive) and remaining security tests
+- Phase 3: finalize Room schema, repositories, and mappings
+- Resume Phase 2: certificate pinning with real host pins
+- Phase 2: cloud backup (Drive/OneDrive) and remaining security tests
 
 ## Architecture
 
@@ -183,4 +185,4 @@ Proprietary - Internal Project
 ---
 
 Created: January 10, 2026
-Status: In Progress (Phase 2)
+Status: In Progress (Phase 3, Phase 2 pending items)

@@ -74,7 +74,7 @@
   androidx.compose.runtime:runtime:1.6.0
   
   // Architecture & Coroutines
-  androidx.room:room-runtime:2.6.1
+  androidx.room:room-runtime:2.8.4
   org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3
   
   // Dependency Injection
@@ -386,6 +386,11 @@
   }
   ```
 
+  Implementation note (Phase 3): domain models currently store monetary values as `Long` cents and
+  timestamps as `Long` epoch ms; category references are kept as IDs (`categoryId`) for normalization.
+  Converters to `BigDecimal`/`LocalDateTime` can be added when analytics and reporting require
+  richer types.
+
 - **DAOs for CRUD Operations**
   - `TransactionDao`
   - `AccountDao`
@@ -399,7 +404,7 @@
   - `CategoryRepository`: Category management
 
 ### Technologies & Tools
-- Room Persistence Library
+  - Room Persistence Library (2.8.4 for Kotlin 2.3.0 metadata compatibility)
 - SQLCipher for encryption
 - Flow-based reactive queries
 
