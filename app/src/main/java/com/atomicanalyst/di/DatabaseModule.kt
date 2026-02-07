@@ -2,6 +2,7 @@ package com.atomicanalyst.di
 
 import com.atomicanalyst.data.security.DatabaseKeyStore
 import com.atomicanalyst.data.security.SecureStorage
+import com.atomicanalyst.utils.Clock
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,8 +22,9 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabaseKeyStore(
-        storage: SecureStorage
-    ): DatabaseKeyStore = DatabaseKeyStore(storage)
+        storage: SecureStorage,
+        clock: Clock
+    ): DatabaseKeyStore = DatabaseKeyStore(storage, clock)
 
     @Provides
     @Singleton

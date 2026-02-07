@@ -175,6 +175,7 @@ Proprietary - Internal Project
 ## Important Notes
 
 - Backend service is post-MVP and not required for current phases
+- Certificate pins are configured via BuildConfig `CERT_PINS` (comma-separated `host=sha256/...`)
 - Single documentation source of truth: IMPLEMENTATION_ROADMAP.md
 - Project directory: C:\Workspace\Atomic-Analyst
 - Latest Android standards (API 28-35)

@@ -1,7 +1,9 @@
 package com.atomicanalyst.di
 
+import com.atomicanalyst.BuildConfig
 import com.atomicanalyst.data.network.AuthHeaderInterceptor
 import com.atomicanalyst.data.network.NetworkSecurityConfig
+import com.atomicanalyst.data.network.PinConfigParser
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,13 +18,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://example.com/"
-
     @Provides
     @Singleton
     fun provideNetworkSecurityConfig(): NetworkSecurityConfig = NetworkSecurityConfig(
-        baseUrl = BASE_URL,
-        pins = emptyList()
+        baseUrl = BuildConfig.API_BASE_URL,
+        pins = PinConfigParser.parse(BuildConfig.CERT_PINS)
     )
 
     @Provides

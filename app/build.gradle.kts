@@ -23,6 +23,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
+
+        buildConfigField("String", "API_BASE_URL", "\"https://example.com/\"")
+        buildConfigField("String", "CERT_PINS", "\"\"")
     }
 
     buildTypes {

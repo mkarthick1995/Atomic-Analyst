@@ -88,9 +88,9 @@
 
 - [ ] **Key Management**
   - [x] Set up Android Keystore integration
-  - [ ] Implement key rotation policies
+  - [x] Implement key rotation policies
   - [x] Create backup encryption key handling
-  - [ ] Test key management
+  - [x] Test key management
 
 - [ ] **Network Security**
   - [ ] Implement certificate pinning
@@ -113,7 +113,7 @@
   - [x] Test full backup/restore cycle
 
 - [ ] **Security Testing**
-  - [ ] Test encryption/decryption
+  - [x] Test encryption/decryption
   - [ ] Test secure credential storage
   - [ ] Test biometric authentication flow
   - [ ] Test API key security
@@ -799,8 +799,9 @@
 ## 📝 Recent Changes Log
 
 ### February 7, 2026
-- Implemented auth backup payloads (export/import of auth data) and added tests
-- Hardened backup payload parsing and updated validation/error handling
+- Added auth backup payload export/import and tests
+- Added key rotation policy support and tests
+- Added certificate pinning parser (pins configurable)
 - Status: Build succeeds with updated Phase 2 backup flow
 
 ### February 6, 2026
