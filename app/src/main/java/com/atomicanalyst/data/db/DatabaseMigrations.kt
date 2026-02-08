@@ -46,6 +46,25 @@ object DatabaseMigrations {
                 "CREATE INDEX IF NOT EXISTS `index_account_liability_cross_ref_liabilityAccountId` " +
                     "ON `account_liability_cross_ref` (`liabilityAccountId`)"
             )
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS `transaction_tag_cross_ref` (
+                    `transactionId` TEXT NOT NULL,
+                    `tagId` TEXT NOT NULL,
+                    PRIMARY KEY(`transactionId`, `tagId`),
+                    FOREIGN KEY(`transactionId`) REFERENCES `transactions`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+                    FOREIGN KEY(`tagId`) REFERENCES `tags`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+                )
+                """.trimIndent()
+            )
+            db.execSQL(
+                "CREATE INDEX IF NOT EXISTS `index_transaction_tag_cross_ref_transactionId` " +
+                    "ON `transaction_tag_cross_ref` (`transactionId`)"
+            )
+            db.execSQL(
+                "CREATE INDEX IF NOT EXISTS `index_transaction_tag_cross_ref_tagId` " +
+                    "ON `transaction_tag_cross_ref` (`tagId`)"
+            )
         }
     }
 

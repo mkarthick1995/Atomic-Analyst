@@ -109,7 +109,7 @@ CERT_PINS=api.example.com=sha256/BASE64PIN,cdn.example.com=sha256/BASE64PIN
 
 Current Phase: Phase 4 - Account Management (In Progress)
 Overall Progress: 34%
-Last Updated: February 7, 2026
+Last Updated: February 8, 2026
 
 ### Completed
 - Phase 0 and Phase 1 foundations
@@ -121,11 +121,12 @@ Last Updated: February 7, 2026
 - Google Drive cloud backup integration (appDataFolder) with sign-in UI
 - Certificate pinning configurable via `CERT_PINS` (TLS-only client)
 - Account service use cases and balance calculation utilities
-- Basic account list/add UI
+- Account edit/delete UI with liability linking
+- Standing instruction creation, toggle, and delete UI
 
 ### Next Steps
-- Phase 4: account edit/delete and liability linking UI
-- Phase 4: standing instruction UI + persistence
+- Phase 5: transaction ingestion and parsing foundations (manual entry + import scaffolding)
+- Phase 12: refine account UI flows and add tests for the account screen
 
 ## Architecture
 
@@ -196,4 +197,4 @@ Proprietary - Internal Project
 ---
 
 Created: January 10, 2026
-Status: In Progress (Phase 4; Phase 3 tests underway)
+Status: In Progress (Phase 4; Phase 3 tests complete)
